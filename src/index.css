@@ -1,0 +1,11 @@
+/* width & height includes padding + border for responsive web design */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color:#ffffcc;
+  font-family: 'IBM Plex Sans', 'Ubuntu', 'Cabin', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

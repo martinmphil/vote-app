@@ -1,0 +1,27 @@
+.App {
+  height: 100vh;
+}
+
+main {
+  max-width: 40em;
+  margin: auto;
+}
+
+.candidate, .castVote {
+  margin-bottom: 2em;
+  padding: 1em;
+  border-style: solid;
+  border-width: thin;
+}
+
+.voteButton {
+  display: block;
+}
+
+.castVote {
+  text-align: center;
+}
+
+.timeStamp {
+  font-size: 60%;
+}
