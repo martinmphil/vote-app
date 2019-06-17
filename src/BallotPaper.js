@@ -4,7 +4,7 @@ import VoteButton from './VoteButton'
 function BallotPaper (props) {
   return (
     <article>
-      <p>{props.user} please cast your vote.</p>
+      <p><em>Mr/Ms {props.user}</em>, please cast your vote.</p>
       {props.candidates.map( candidate => 
         <section
           key = {candidate}

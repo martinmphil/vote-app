@@ -7,19 +7,25 @@ import AfterVoting from './AfterVoting'
 function App() {
 
   const commons = [
-    "Large",
-    "Big Shiny",
+    "Mar",
+    "Star",
     "York",
-    "Fluff",
+    "Flff",
     "Crit"
   ]
 
+  const topic = "Framework for developing new Testers' App."
+
   const candidates = [
-    "suggestion1",
-    "suggestion2",
-    "suggestion3",
-    "suggestion4",
-    "suggestion5"
+    "Function components in create-react-app",
+    "Classes in create-react-app",
+    "Wait for React suspense",
+    "Vue cli create app",
+    "Nuxt",
+    "Wait for Vue 3",
+    "Angular",
+    "Elm",
+    "Vanilla JavaScript"
   ]
 
   const [user, setUser] = useState(commons[0])
@@ -62,6 +68,7 @@ function App() {
 
       <main>
         <h1>Vote app</h1>
+        <h2>{topic}</h2>
         <MainXhtml />
         <hr />
       </main>
