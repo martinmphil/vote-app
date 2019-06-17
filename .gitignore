@@ -11,8 +11,8 @@
 # production
 /build
 
-# private
-/private
+# private data store
+/src/private
 
 # misc
 .DS_Store
