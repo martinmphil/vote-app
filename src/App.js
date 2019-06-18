@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import cloudDataStore from './private/privateData'
 import './App.css'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
