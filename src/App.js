@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import db from './private/privateData'
 import './App.css'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
@@ -31,6 +32,23 @@ function App() {
   const [user, setUser] = useState(commons[0])
   const [votes, setVotes] = useState([])
 
+
+
+  // Realtime ballot update
+  const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+  const getRealtimeVoteUpdates = function() {
+    voteRef.onSnapshot(function (doc) {
+      if (doc && doc.exists) {
+        const myData = doc.data()
+        console.log(myData)
+      }
+    })
+  }
+  getRealtimeVoteUpdates()
+
+
+
+
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
     let eligible = true
@@ -53,9 +71,26 @@ function App() {
   const handleLogin = (e) => { setUser(e.target.value) }
 
   const handleVote = (candidateX) => {
-    setVotes([...votes,
-    { votedFor: candidateX, user: user, timeStamp: new Date() }
-    ])
+    if (candidateX) { // if clause for testing ONLY
+      voteFn ('a', 12)
+    }
+    // setVotes([...votes,
+    // { votedFor: candidateX, user: user, timeStamp: new Date() }
+    // ])
+  }
+
+  const voteFn = (userCodeName, candidateCodeNumber) => {
+    const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+    let voteCast = 11
+    console.log('I am going to save ' + voteCast)
+    voteRef.set({
+      a: voteCast
+    }, { merge: true }).then(function(){
+      console.log('vote cast')
+    }).catch(function(err) {
+      console.log('my error was ', err)
+    })
+
   }
 
   return (
