@@ -1,19 +1,12 @@
 import React, { useState } from 'react'
 import db from './private/privateData'
 import './App.css'
+import ClearVotesButton from './ClearVotesButton'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
 import AfterVoting from './AfterVoting'
 
 function App() {
-
-  const commons = [
-    "Mar",
-    "Star",
-    "York",
-    "Flff",
-    "Crit"
-  ]
 
   const topic = "Framework for developing new Testers' App."
 
@@ -29,22 +22,32 @@ function App() {
     "Vanilla JavaScript"
   ]
 
+  const commons = [
+    "Mar",
+    "Star",
+    "York",
+    "Flff",
+    "Crit"
+  ]
+
   const [user, setUser] = useState(commons[0])
   const [votes, setVotes] = useState([])
 
 
 
+
   // Realtime ballot update
-  const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-  const getRealtimeVoteUpdates = function() {
-    voteRef.onSnapshot(function (doc) {
-      if (doc && doc.exists) {
-        const myData = doc.data()
-        console.log(myData)
-      }
-    })
-  }
-  getRealtimeVoteUpdates()
+  // const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+  // const getRealtimeBallotUpdates = function() {
+  //   voteRef.onSnapshot(function (doc) {
+  //     if (doc && doc.exists) {
+  //       const myData = doc.data()
+  //       console.log('getRealtimeVoteUpdates')
+  //       console.log(myData)
+  //     }
+  //   })
+  // }
+  // getRealtimeBallotUpdates()
 
 
 
@@ -52,7 +55,7 @@ function App() {
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
     let eligible = true
-    votes.forEach( (v) => { if ( v.user === user ) { eligible = false} })
+    votes.forEach( (vote) => { if ( vote.user === user ) { eligible = false} })
     if (eligible) { return (
       <BallotPaper
         user = {user}
@@ -70,31 +73,45 @@ function App() {
 
   const handleLogin = (e) => { setUser(e.target.value) }
 
-  const handleVote = (candidateX) => {
-    if (candidateX) { // if clause for testing ONLY
-      voteFn ('a', 12)
-    }
+  const handleVote = (candidateNbr) => {
+
+    const userNbr = commons.indexOf(user) + 1
+
+    voteUpdateCloud( (userNbr.toString()), candidateNbr)
+
+    console.log('My user number is ' + userNbr.toString())
+    console.log('My candidate number is ' + candidateNbr)
+
     // setVotes([...votes,
     // { votedFor: candidateX, user: user, timeStamp: new Date() }
     // ])
   }
 
-  const voteFn = (userCodeName, candidateCodeNumber) => {
-    const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-    let voteCast = 11
-    console.log('I am going to save ' + voteCast)
-    voteRef.set({
-      a: voteCast
-    }, { merge: true }).then(function(){
+  const voteUpdateCloud = (userNbr, candidateNbr) => {
+
+    const userDocRef = userNbr.toString()
+
+    const voteRef =
+      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+      .collection('commons').doc(userDocRef)
+
+    console.log('I am going to save ' + candidateNbr)
+    voteRef.update({
+      v: candidateNbr
+    })
+    .then(function(){
       console.log('vote cast')
-    }).catch(function(err) {
-      console.log('my error was ', err)
+    })
+    .catch(function(err) {
+      console.log('Error on set fn is ', err)
     })
 
   }
 
   return (
     <div className="App">
+
+      <ClearVotesButton commons = {commons} />
 
       <LogIn
         commons = {commons}

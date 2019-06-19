@@ -5,14 +5,14 @@ function BallotPaper (props) {
   return (
     <article>
       <p><em>Mr/Ms {props.user}</em>, please cast your vote.</p>
-      {props.candidates.map( candidate => 
+      {props.candidates.map( (candidate, index) => 
         <section
           key = {candidate}
           className = "candidate"
         >
           {candidate}
           <VoteButton
-            candidate = {candidate}
+            candidateNbr = {index + 1}
             handleVote = {props.handleVote}
           />
         </section>
