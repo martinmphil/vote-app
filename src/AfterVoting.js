@@ -39,7 +39,7 @@ function AfterVoting (props) {
       {props.votes.map(
         (vo) => {
           // From "prop.votes" array, vote object "vo" is 
-          // { votedFor: 'candidate_x', user: 'user_y', timeStamp: date_number }
+          // { votedFor: candidateIndex, user: userIndex, timeStamp: date_number }
           return (
             <section
               key={vo.timeStamp.toISOString()}

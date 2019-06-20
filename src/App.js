@@ -73,31 +73,32 @@ function App() {
 
   const handleLogin = (e) => { setUser(e.target.value) }
 
-  const handleVote = (candidateNbr) => {
+  const handleVote = (candidateIndex) => {
 
-    const userNbr = commons.indexOf(user) + 1
+    const userIndex = commons.indexOf(user)
 
-    voteUpdateCloud( (userNbr.toString()), candidateNbr)
+    voteUpdateCloud( (userIndex.toString()), candidateIndex)
 
-    console.log('My user number is ' + userNbr.toString())
-    console.log('My candidate number is ' + candidateNbr)
+    console.log('My user number is ' + userIndex.toString())
+    console.log('My candidate number is ' + candidateIndex)
+    console.log('candidate is ' + (candidates[candidateIndex]) )
 
     // setVotes([...votes,
-    // { votedFor: candidateX, user: user, timeStamp: new Date() }
+    // { votedFor: candidateIndex, user: userIndex, timeStamp: new Date() }
     // ])
   }
 
-  const voteUpdateCloud = (userNbr, candidateNbr) => {
+  const voteUpdateCloud = (userIndex, candidateIndex) => {
 
-    const userDocRef = userNbr.toString()
+    const userDocRef = userIndex.toString()
 
     const voteRef =
       db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
       .collection('commons').doc(userDocRef)
 
-    console.log('I am going to save ' + candidateNbr)
+    console.log('I am going to save ' + candidateIndex)
     voteRef.update({
-      v: candidateNbr
+      v: candidateIndex
     })
     .then(function(){
       console.log('vote cast')

@@ -6,7 +6,7 @@ function VoteButton (props) {
     <button
       className = "voteButton"
       type="button"
-      onClick={ () => props.handleVote(props.candidateNbr) }
+      onClick={ () => props.handleVote(props.candidateIndex) }
     >
       Vote
     </button>

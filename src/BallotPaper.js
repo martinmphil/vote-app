@@ -12,7 +12,7 @@ function BallotPaper (props) {
         >
           {candidate}
           <VoteButton
-            candidateNbr = {index + 1}
+            candidateIndex = {index}
             handleVote = {props.handleVote}
           />
         </section>
