@@ -30,33 +30,42 @@ function App() {
     "Crit"
   ]
 
-  const [user, setUser] = useState(commons[0])
-  const [votes, setVotes] = useState([])
+  const setupVotesArray = () => {
+    const result = []
+    for (var i = 0; i < commons.length; i++)
+      {result[i] = 999999}
+    return result
+  }
 
+  const [user, setUser] = useState( commons[0] )
+  const [votes, setVotes] = useState( setupVotesArray() )
 
-
+  // Votes array index === userIndex.
+  // and array elements start at 999999, before recording cast votes 
+  // as number values corresponding to candidateIndex
 
   // Realtime ballot update
-  // const voteRef = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
   // const getRealtimeBallotUpdates = function() {
-  //   voteRef.onSnapshot(function (doc) {
-  //     if (doc && doc.exists) {
-  //       const myData = doc.data()
-  //       console.log('getRealtimeVoteUpdates')
-  //       console.log(myData)
-  //     }
-  //   })
+
+  //   db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+  //     .collection('commons').onSnapshot(function(querySnapshot) {
+  //     querySnapshot.forEach(function(doc) {
+  //         // doc.data() is never undefined for query doc snapshots
+  //         console.log("doc id is ", doc.id, " and it contains ", doc.data());
+  //     });
+  //   });
   // }
   // getRealtimeBallotUpdates()
 
 
 
 
+
+
+
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
-    let eligible = true
-    votes.forEach( (vote) => { if ( vote.user === user ) { eligible = false} })
-    if (eligible) { return (
+    if (votes[commons.indexOf(user)] === 999999) { return (
       <BallotPaper
         user = {user}
         handleVote = {handleVote}
@@ -77,37 +86,48 @@ function App() {
 
     const userIndex = commons.indexOf(user)
 
+    // Set votes by mapping votes array unchanged except at 
+    // the index number for this user in the commons
+    // which is updated to the index number of their preferred candidate.
+    setVotes(
+      votes.map ( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
+    )
+
     voteUpdateCloud( (userIndex.toString()), candidateIndex)
 
     console.log('My user number is ' + userIndex.toString())
     console.log('My candidate number is ' + candidateIndex)
     console.log('candidate is ' + (candidates[candidateIndex]) )
 
-    // setVotes([...votes,
-    // { votedFor: candidateIndex, user: userIndex, timeStamp: new Date() }
-    // ])
   }
 
   const voteUpdateCloud = (userIndex, candidateIndex) => {
 
     const userDocRef = userIndex.toString()
 
-    const voteRef =
-      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-      .collection('commons').doc(userDocRef)
+    // const voteRef =
+    //   db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+    //   .collection('commons').doc(userDocRef)
 
-    console.log('I am going to save ' + candidateIndex)
-    voteRef.update({
-      v: candidateIndex
-    })
-    .then(function(){
-      console.log('vote cast')
-    })
-    .catch(function(err) {
-      console.log('Error on set fn is ', err)
-    })
+    // console.log('I am going to save ' + candidateIndex)
+    // voteRef.update({
+    //   v: candidateIndex
+    // })
+    // .then(function(){
+    //   console.log('vote cast')
+    // })
+    // .catch(function(err) {
+    //   console.log('Error on set fn is ', err)
+    // })
 
   }
+
+// REMOVE
+console.log('this is my votes array')
+console.log(votes)
+
+
+
 
   return (
     <div className="App">
