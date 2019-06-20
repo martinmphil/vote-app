@@ -46,7 +46,6 @@ function AfterVoting (props) {
               className = "castVote"
             >
               <p>{vo.user} voted for {vo.votedFor}</p>
-              <p className="timeStamp">on {vo.timeStamp.toString()}.</p>
             </section>
           )
         }
