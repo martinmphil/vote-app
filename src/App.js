@@ -40,22 +40,36 @@ function App() {
   const [user, setUser] = useState( commons[0] )
   const [votes, setVotes] = useState( setupVotesArray() )
 
-  // Votes array index === userIndex.
-  // and array elements start at 999999, before recording cast votes 
-  // as number values corresponding to candidateIndex
+  // Index of the votes array exactly matches the index of commons array,
+  // thus correlating cast votes to specific users.
+  // Votes array elements are preset to a value of 999999.
+  // When a vote is cast, the votes array records the number value 
+  // of the index for their preference in the candidate array.
 
   // Realtime ballot update
-  // const getRealtimeBallotUpdates = function() {
+  const getRealtimeBallotUpdates = function() {
 
-  //   db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-  //     .collection('commons').onSnapshot(function(querySnapshot) {
-  //     querySnapshot.forEach(function(doc) {
-  //         // doc.data() is never undefined for query doc snapshots
-  //         console.log("doc id is ", doc.id, " and it contains ", doc.data());
-  //     });
-  //   });
-  // }
-  // getRealtimeBallotUpdates()
+    const cloudBallotState = []
+
+    db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+      .collection('commons').onSnapshot(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log('my doc id is', doc.id, 'and my doc data is ', doc.data())
+        // construct cloud version of votes array
+        if (doc.id < votes.length) {
+          cloudBallotState[parseInt(doc.id)] = doc.data().v
+        }
+      });
+    });
+    if (cloudBallotState !== votes) {
+      console.log('cloud and local did NOT match');
+    }
+    console.log(cloudBallotState);
+    console.log(votes);
+    
+  }
+  getRealtimeBallotUpdates()
 
 
 
@@ -95,38 +109,26 @@ function App() {
 
     voteUpdateCloud( (userIndex.toString()), candidateIndex)
 
-    console.log('My user number is ' + userIndex.toString())
-    console.log('My candidate number is ' + candidateIndex)
-    console.log('candidate is ' + (candidates[candidateIndex]) )
-
   }
 
   const voteUpdateCloud = (userIndex, candidateIndex) => {
 
     const userDocRef = userIndex.toString()
 
-    // const voteRef =
-    //   db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-    //   .collection('commons').doc(userDocRef)
+    const voteRef =
+      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+      .collection('commons').doc(userDocRef)
 
-    // console.log('I am going to save ' + candidateIndex)
-    // voteRef.update({
-    //   v: candidateIndex
-    // })
-    // .then(function(){
-    //   console.log('vote cast')
-    // })
-    // .catch(function(err) {
-    //   console.log('Error on set fn is ', err)
-    // })
-
+    voteRef.update({
+      v: candidateIndex
+    })
+    .then(function(){
+      console.log('vote cast')
+    })
+    .catch(function(err) {
+      console.log('Error on set fn:- ', err)
+    })
   }
-
-// REMOVE
-console.log('this is my votes array')
-console.log(votes)
-
-
 
 
   return (
