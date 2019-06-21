@@ -49,33 +49,29 @@ function App() {
   // Realtime ballot update
   const getRealtimeBallotUpdates = function() {
 
-    const cloudBallotState = []
-
-    db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-      .collection('commons').onSnapshot(function(querySnapshot) {
+    db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+      .onSnapshot(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        // doc.data() is never undefined for query doc snapshots
-        console.log('my doc id is', doc.id, 'and my doc data is ', doc.data())
-        // construct cloud version of votes array
-        if (doc.id < votes.length) {
-          cloudBallotState[parseInt(doc.id)] = doc.data().v
-        }
+        let userIndex = parseInt(doc.id)
+        let cloudVote = doc.data().v
+        if (
+            // User is within this commons
+            userIndex < commons.length
+            // Ignoring own votes 
+            && userIndex !== commons.indexOf(user)
+            // Cloud record differs from local record
+            && votes[userIndex] !== cloudVote
+          ) {
+          let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
+          setVotes(q)
+          }
       });
+    }, function(error) {
+      console.log('Realtime update fn error:- ', error)
     });
-    if (cloudBallotState !== votes) {
-      console.log('cloud and local did NOT match');
-    }
-    console.log(cloudBallotState);
-    console.log(votes);
     
   }
   getRealtimeBallotUpdates()
-
-
-
-
-
-
 
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
@@ -100,9 +96,9 @@ function App() {
 
     const userIndex = commons.indexOf(user)
 
-    // Set votes by mapping votes array unchanged except at 
+    // Set votes by mapping votes array unchanged except at
     // the index number for this user in the commons
-    // which is updated to the index number of their preferred candidate.
+    // where this single value is updated to the index number of their preferred candidate.
     setVotes(
       votes.map ( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
     )
@@ -122,19 +118,23 @@ function App() {
     voteRef.update({
       v: candidateIndex
     })
-    .then(function(){
-      console.log('vote cast')
-    })
     .catch(function(err) {
       console.log('Error on set fn:- ', err)
     })
+  }
+
+  const clearLocalVotes = () => {
+    setVotes( setupVotesArray() )
   }
 
 
   return (
     <div className="App">
 
-      <ClearVotesButton commons = {commons} />
+      <ClearVotesButton
+        commons = {commons}
+        handleClearLocalVotes = {clearLocalVotes}
+      />
 
       <LogIn
         commons = {commons}
