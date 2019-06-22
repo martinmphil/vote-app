@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import db from './private/privateData'
 import './App.css'
 import ClearVotesButton from './ClearVotesButton'
@@ -40,38 +40,40 @@ function App() {
   const [user, setUser] = useState( commons[0] )
   const [votes, setVotes] = useState( setupVotesArray() )
 
-  // Index of the votes array exactly matches the index of commons array,
+  // Index of votes array exactly matches the index of commons array,
   // thus correlating cast votes to specific users.
   // Votes array elements are preset to a value of 999999.
   // When a vote is cast, the votes array records the number value 
   // of the index for their preference in the candidate array.
 
+useEffect( () => {
   // Realtime ballot update
-  const getRealtimeBallotUpdates = function() {
-
-    db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
-      .onSnapshot(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        let userIndex = parseInt(doc.id)
-        let cloudVote = doc.data().v
-        if (
-            // User is within this commons
-            userIndex < commons.length
-            // Ignoring own votes 
-            && userIndex !== commons.indexOf(user)
-            // Cloud record differs from local record
-            && votes[userIndex] !== cloudVote
-          ) {
-          let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
-          setVotes(q)
-          }
-      });
-    }, function(error) {
-      console.log('Realtime update fn error:- ', error)
+  // Assignment declaration (eg "unsubscribe") both subscribes to database watcher,
+  // and simultaneously creates function that can be called later to unsubscribe. 
+  var unsubscribe = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+    .onSnapshot(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      let userIndex = parseInt(doc.id)
+      let cloudVote = doc.data().v
+      if (
+          // User is within this commons
+          userIndex < commons.length
+          // Ignoring own votes 
+          && userIndex !== commons.indexOf(user)
+          // Cloud record differs from local record
+          && votes[userIndex] !== cloudVote
+        ) {
+        let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
+        setVotes(q)
+        }
     });
-    
-  }
-  getRealtimeBallotUpdates()
+  }, function(error) {
+    console.log('Realtime update fn error:- ', error)
+  });
+
+  return () => unsubscribe();
+
+})
 
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
@@ -124,7 +126,8 @@ function App() {
   }
 
   const clearLocalVotes = () => {
-    setVotes( setupVotesArray() )
+    const n = votes.map( (p, index) => index === commons.indexOf(user) ? 999999 : p )
+    setVotes(n)
   }
 
 

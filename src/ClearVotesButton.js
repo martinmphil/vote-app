@@ -2,7 +2,11 @@ import React from 'react'
 import db from './private/privateData'
 
 function ClearVotesButton (props) {
-    const clearAllVotesUpdater = () => {
+
+  const clearAllVotesUpdater = () => {
+
+    props.handleClearLocalVotes()
+  
     const batch = db.batch()
 
     const n = props.commons.length
@@ -18,7 +22,6 @@ function ClearVotesButton (props) {
     }
 
     batch.commit()
-    .then(props.handleClearLocalVotes())
     .catch(function(err) {
       console.log('Error in resetting votes ', err)
     })
