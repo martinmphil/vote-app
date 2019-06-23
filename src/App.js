@@ -46,34 +46,40 @@ function App() {
   // When a vote is cast, the votes array records the number value 
   // of the index for their preference in the candidate array.
 
-  useEffect( () => {
-    // Realtime ballot update
-    // Assignment declaration (eg "unsubscribe") both subscribes to database watcher,
-    // and simultaneously creates function that can be called later to unsubscribe. 
-    var unsubscribe = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
-      .onSnapshot(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        let userIndex = parseInt(doc.id)
-        let cloudVote = doc.data().v
+  const checkForNewCloudVotes = () => {
+    console.log('checking for new votes')
+    const cloudCommons = 
+      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+    
+    cloudCommons.get().then( querySnapshot => {
+      querySnapshot.forEach( doc => {
+        // doc.data() is never undefined for query doc snapshots
+        const userIndex = parseInt(doc.id)
+        const cloudVote = doc.data().v
         if (
-            // User is within this commons
-            userIndex < commons.length
-            // Ignoring own votes 
-            && userIndex !== commons.indexOf(user)
-            // Cloud record differs from local record
-            && votes[userIndex] !== cloudVote
-          ) {
-          let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
-          setVotes(q)
-          }
+          // User is within this commons
+          userIndex < commons.length
+          // Ignoring own votes
+          && userIndex !== commons.indexOf(user)
+          // Cloud record differs from local record
+          && votes[userIndex] !== cloudVote
+        )
+        {
+          const votesUpdatedFromCloud = 
+            votes.map( (x, index) => index === userIndex ? cloudVote : x )
+          setVotes(votesUpdatedFromCloud)
+        }
+        });
+      })
+      .catch( error => {
+        console.log("Error contacting cloud:", error);
       });
-    }, function(error) {
-      console.log('Realtime update fn error:- ', error)
-    });
+  }
 
-    return () => unsubscribe();
-
+  useEffect( () => {
+    checkForNewCloudVotes()
   })
+
 
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
@@ -88,6 +94,7 @@ function App() {
         commons = {commons}
         candidates = {candidates}
         votes = {votes}
+        checkCloud = {checkForNewCloudVotes}
       />
     )}
   }
@@ -102,20 +109,18 @@ function App() {
     // the index number for this user in the commons
     // where this single value is updated to the index number of their preferred candidate.
     setVotes(
-      votes.map ( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
+      votes.map( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
     )
 
-    voteUpdateCloud( (userIndex.toString()), candidateIndex)
+    sendVoteToCloud( (userIndex.toString()), candidateIndex)
 
   }
 
-  const voteUpdateCloud = (userIndex, candidateIndex) => {
-
-    const userDocRef = userIndex.toString()
+  const sendVoteToCloud = (userIndex, candidateIndex) => {
 
     const voteRef =
       db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-      .collection('commons').doc(userDocRef)
+      .collection('commons').doc( userIndex.toString() )
 
     voteRef.update({
       v: candidateIndex
