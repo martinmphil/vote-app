@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import db from './private/privateData'
 import './App.css'
 import ClearVotesButton from './ClearVotesButton'
@@ -46,7 +46,7 @@ function App() {
   // When a vote is cast, the votes array records the number value 
   // of the index for their preference in the candidate array.
 
-  const checkForNewCloudVotes = () => {
+  const checkForNewCloudVotes = useCallback(() => {
     console.log('checking for new votes')
     const cloudCommons = 
       db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
@@ -74,12 +74,9 @@ function App() {
       .catch( error => {
         console.log("Error contacting cloud:", error);
       });
-  }
+  }, [commons, user, votes] );
 
-  useEffect( () => {
-    checkForNewCloudVotes()
-  })
-
+  checkForNewCloudVotes()
 
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
