@@ -46,34 +46,34 @@ function App() {
   // When a vote is cast, the votes array records the number value 
   // of the index for their preference in the candidate array.
 
-useEffect( () => {
-  // Realtime ballot update
-  // Assignment declaration (eg "unsubscribe") both subscribes to database watcher,
-  // and simultaneously creates function that can be called later to unsubscribe. 
-  var unsubscribe = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
-    .onSnapshot(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      let userIndex = parseInt(doc.id)
-      let cloudVote = doc.data().v
-      if (
-          // User is within this commons
-          userIndex < commons.length
-          // Ignoring own votes 
-          && userIndex !== commons.indexOf(user)
-          // Cloud record differs from local record
-          && votes[userIndex] !== cloudVote
-        ) {
-        let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
-        setVotes(q)
-        }
+  useEffect( () => {
+    // Realtime ballot update
+    // Assignment declaration (eg "unsubscribe") both subscribes to database watcher,
+    // and simultaneously creates function that can be called later to unsubscribe. 
+    var unsubscribe = db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+      .onSnapshot(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        let userIndex = parseInt(doc.id)
+        let cloudVote = doc.data().v
+        if (
+            // User is within this commons
+            userIndex < commons.length
+            // Ignoring own votes 
+            && userIndex !== commons.indexOf(user)
+            // Cloud record differs from local record
+            && votes[userIndex] !== cloudVote
+          ) {
+          let q = votes.map( (y, index) => index === parseInt(doc.id) ? doc.data().v : y )
+          setVotes(q)
+          }
+      });
+    }, function(error) {
+      console.log('Realtime update fn error:- ', error)
     });
-  }, function(error) {
-    console.log('Realtime update fn error:- ', error)
-  });
 
-  return () => unsubscribe();
+    return () => unsubscribe();
 
-})
+  })
 
   // Determine components inside main tag before and after voting.
   function MainXhtml() {

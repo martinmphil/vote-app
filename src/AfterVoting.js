@@ -4,7 +4,7 @@ function AfterVoting (props) {
 
   function LeagueTable() {
 
-    // returns ranked array of {candidate: "candidate_x", popularity: number}
+    // pollResults is a ranked array of {candidate: "candidate_x", popularity: number}
     const pollResults = props.candidates.map(
       (c, index) => { return (
         {candidate: c, popularity: (props.votes.filter( v => v === index ).length ) }

@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom'
 import { act } from 'react-dom/test-utils'
 import AfterVoting from './AfterVoting'
 
-const votes = [
-  { votedFor: 'option1', user: 'user1', timeStamp: new Date(2000) },
-  { votedFor: 'option2', user: 'user2', timeStamp: new Date(2001) },
-  { votedFor: 'option3', user: 'user3', timeStamp: new Date(2002) }
-]
+const votes = [0, 0, 1]
 
 const candidates = [
   "option1",
