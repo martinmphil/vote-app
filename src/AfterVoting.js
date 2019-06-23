@@ -26,7 +26,6 @@ function AfterVoting (props) {
       <button type="button" onClick= {props.checkCloud}>
         Check for new votes
       </button>
-      <p>{props.votes}</p>
       <p>
         {(props.votes.filter(v => v === 999999).length <= 0 ) ? 'Poll closed' : 'Still voting'}
       </p>

@@ -37,14 +37,20 @@ function App() {
     return result
   }
 
-  const [user, setUser] = useState( commons[0] )
-  const [votes, setVotes] = useState( setupVotesArray() )
-
   // Index of votes array exactly matches the index of commons array,
   // thus correlating cast votes to specific users.
   // Votes array elements are preset to a value of 999999.
   // When a vote is cast, the votes array records the number value 
   // of the index for their preference in the candidate array.
+
+  // Set App state.
+  const [user, setUser] = useState( commons[0] )
+  const [votes, setVotes] = useState( setupVotesArray() )
+
+  const clearLocalVotes = () => {
+    const n = votes.map( (p) =>  999999 )
+    setVotes(n)
+  }
 
   const checkForNewCloudVotes = useCallback(() => {
     console.log('checking for new votes')
@@ -78,6 +84,33 @@ function App() {
 
   checkForNewCloudVotes()
 
+  const sendVoteToCloud = (userIndex, candidateIndex) => {
+
+    const voteRef =
+      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
+      .collection('commons').doc( userIndex.toString() )
+
+    voteRef.update({
+      v: candidateIndex
+    })
+    .catch(function(err) {
+      console.log('Error setting cloud db:- ', err)
+    })
+  }
+
+  const handleVote = (candidateIndex) => {
+    const userIndex = commons.indexOf(user)
+    // Set votes by mapping votes array unchanged except at
+    // the index number for this user in the commons
+    // where this single value is updated to the index number of their preferred candidate.
+    setVotes(
+      votes.map( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
+    )
+    sendVoteToCloud( (userIndex.toString()), candidateIndex)
+  }
+
+  const handleLogin = (e) => { setUser(e.target.value) }
+
   // Determine components inside main tag before and after voting.
   function MainXhtml() {
     if (votes[commons.indexOf(user)] === 999999) { return (
@@ -94,42 +127,6 @@ function App() {
         checkCloud = {checkForNewCloudVotes}
       />
     )}
-  }
-
-  const handleLogin = (e) => { setUser(e.target.value) }
-
-  const handleVote = (candidateIndex) => {
-
-    const userIndex = commons.indexOf(user)
-
-    // Set votes by mapping votes array unchanged except at
-    // the index number for this user in the commons
-    // where this single value is updated to the index number of their preferred candidate.
-    setVotes(
-      votes.map( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
-    )
-
-    sendVoteToCloud( (userIndex.toString()), candidateIndex)
-
-  }
-
-  const sendVoteToCloud = (userIndex, candidateIndex) => {
-
-    const voteRef =
-      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
-      .collection('commons').doc( userIndex.toString() )
-
-    voteRef.update({
-      v: candidateIndex
-    })
-    .catch(function(err) {
-      console.log('Error on set fn:- ', err)
-    })
-  }
-
-  const clearLocalVotes = () => {
-    const n = votes.map( (p, index) => index === commons.indexOf(user) ? 999999 : p )
-    setVotes(n)
   }
 
 
