@@ -4,21 +4,74 @@ function AfterVoting (props) {
 
   function LeagueTable() {
 
-    // pollResults is a ranked array of {candidate: "candidate_x", popularity: number}
+    // pollResults, ordered by popularity, 
+    // contains array of {candidate: "candidate_x", popularity: number}
     const pollResults = props.candidates.map(
       (c, index) => { return (
         {candidate: c, popularity: (props.votes.filter( v => v === index ).length ) }
       )})
       .filter( p => p.popularity > 0 )
-      .sort( (a, b) => b.popularity - a.popularity) 
+      .sort( (a, b) => b.popularity - a.popularity)
 
-    return (
-      <ol>{pollResults.map( w => {return (
-        <li key={w.candidate}>
-          "{w.candidate}" gained {w.popularity} votes
+    function listings (array) {
+      return array.map(d => 
+        <li key={d.candidate}>
+          "{d.candidate}"" gained {d.popularity}
+          {d.popularity === 1 ? ' vote' : ' votes'}
         </li>
-      )})}</ol>
-    )
+      )
+    }
+
+    let leagueTableXhtml 
+    
+    if (pollResults.length > 1
+      && pollResults[0].popularity === pollResults[1].popularity)
+    {
+      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
+      if (runnersUp.length > 0)
+      {runnersUp = (
+        <div>
+          <h4>Runners up</h4>
+          <ul>
+            {listings(runnersUp)}
+          </ul>
+        </div>
+      )}
+      leagueTableXhtml = (
+      <section>
+        <h3>Joint winners</h3>
+        <ul>
+          {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
+        </ul>
+        {runnersUp}
+      </section>
+      )
+    } else {
+      leagueTableXhtml = (<ol>{listings(pollResults)}</ol>)
+    }
+    
+
+    return leagueTableXhtml
+    
+  //   ( pollResults.length > 1
+  //     && pollResults[0].popularity === pollResults[1].popularity
+  //   )
+  //   ?
+  //   (
+  //     <section>
+  //       <h3>Joint winners</h3>
+  //       <ul>
+  //         {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
+  //       </ul>
+  //       {if (true) {'oh'}}
+
+  //       <h3>Runners up</h3>
+  //       <p>Tied result zero {pollResults[0].popularity} One {pollResults[1].popularity}</p>
+        
+  //     </section>
+  //   )
+  //   :
+    
   }
 
   return (
