@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import db from './private/privateData'
 import './App.css'
 import ClearVotesButton from './ClearVotesButton'
@@ -30,13 +30,6 @@ function App() {
     "Crit"
   ]
 
-  const setupVotesArray = () => {
-    const result = []
-    for (var i = 0; i < commons.length; i++)
-      {result[i] = 999999}
-    return result
-  }
-
   // Index of votes array exactly matches the index of commons array,
   // thus correlating cast votes to specific users.
   // Votes array elements are preset to a value of 999999.
@@ -45,46 +38,39 @@ function App() {
 
   // Set App state.
   const [user, setUser] = useState( commons[0] )
-  const [votes, setVotes] = useState( setupVotesArray() )
+  const [votes, setVotes] = useState([])
+  const [askCloud, setAskCloud] = useState(false)
 
-  const clearLocalVotes = () => {
-    const n = votes.map( (p) =>  999999 )
-    setVotes(n)
+  useEffect( () => {
+    // To REMOVE
+    console.log('checking for new votes')
+    const fetchData = async () => {
+      const cloudData = await(
+        db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+        .get().then( querySnapshot =>
+          querySnapshot.docs.map( doc => doc.data().v )
+        )
+      )
+      // To REMOVE
+      console.log(cloudData.slice(0, commons.length) )
+      setVotes( cloudData.slice(0, commons.length) )      
+    }
+    fetchData()
+  }, [commons.length, askCloud])
+  // Calling checkCloudFn changes askCloud dependency which triggers an update from the cloud.
+  function checkCloudFn() {
+    setAskCloud(true)
+    console.log('setting ask cloud to true')
   }
 
-  const checkForNewCloudVotes = useCallback(() => {
-    console.log('checking for new votes')
-    const cloudCommons = 
-      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
-    
-    cloudCommons.get().then( querySnapshot => {
-      querySnapshot.forEach( doc => {
-        // doc.data() is never undefined for query doc snapshots
-        const userIndex = parseInt(doc.id)
-        const cloudVote = doc.data().v
-        if (
-          // User is within this commons
-          userIndex < commons.length
-          // Ignoring own votes
-          && userIndex !== commons.indexOf(user)
-          // Cloud record differs from local record
-          && votes[userIndex] !== cloudVote
-        )
-        {
-          const votesUpdatedFromCloud = 
-            votes.map( (x, index) => index === userIndex ? cloudVote : x )
-          setVotes(votesUpdatedFromCloud)
-        }
-        });
-      })
-      .catch( error => {
-        console.log("Error contacting cloud:", error);
-      });
-  }, [commons, user, votes] );
 
-  checkForNewCloudVotes()
 
+  // CONVERT TO ASNYC AWAIT
   const sendVoteToCloud = (userIndex, candidateIndex) => {
+
+    // To REMOVE
+    console.log('sending votes to the cloud');
+    
 
     const voteRef =
       db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
@@ -103,11 +89,21 @@ function App() {
     // Set votes by mapping votes array unchanged except at
     // the index number for this user in the commons
     // where this single value is updated to the index number of their preferred candidate.
+
+    // To REMOVE
+    console.log('handling vote');
+    
     setVotes(
       votes.map( (v, index) => {return ( index === userIndex ? candidateIndex : v ) })
     )
+
     sendVoteToCloud( (userIndex.toString()), candidateIndex)
   }
+
+
+
+
+
 
   const handleLogin = (e) => { setUser(e.target.value) }
 
@@ -124,7 +120,7 @@ function App() {
         commons = {commons}
         candidates = {candidates}
         votes = {votes}
-        checkCloud = {checkForNewCloudVotes}
+        checkCloudFn = {checkCloudFn}
       />
     )}
   }
@@ -133,10 +129,13 @@ function App() {
   return (
     <div className="App">
 
-      <ClearVotesButton
-        commons = {commons}
-        handleClearLocalVotes = {clearLocalVotes}
-      />
+      {//NB true && expression evaluates to expression, false && expression evaluates to false.
+        (commons.indexOf(user) === 0) &&
+        <ClearVotesButton
+          commons = {commons}
+          checkCloudFn = {checkCloudFn}
+        />
+      }
 
       <LogIn
         commons = {commons}

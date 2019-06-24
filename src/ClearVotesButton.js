@@ -4,8 +4,6 @@ import db from './private/privateData'
 function ClearVotesButton (props) {
 
   const clearAllVotesUpdater = () => {
-
-    props.handleClearLocalVotes()
   
     const batch = db.batch()
 
@@ -21,10 +19,13 @@ function ClearVotesButton (props) {
 
     }
 
-    batch.commit()
-    .catch(function(err) {
-      console.log('Error in resetting votes ', err)
-    })
+    async function commitBatch() {
+      await batch.commit().catch( (err) => 
+        console.log('Error in resetting votes ', err)
+      )
+      props.checkCloudFn()
+    }
+    commitBatch()
   }
 
   return (
@@ -32,6 +33,7 @@ function ClearVotesButton (props) {
       Clear all
     </button>
   )
+
 }
 
 export default ClearVotesButton

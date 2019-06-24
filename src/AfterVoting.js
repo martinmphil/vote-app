@@ -58,7 +58,7 @@ function AfterVoting (props) {
 
   return (
     <article>
-      <button type="button" onClick= {props.checkCloud}>
+      <button type="button" onClick= {props.checkCloudFn}>
         Check for new votes
       </button>
       <p>
