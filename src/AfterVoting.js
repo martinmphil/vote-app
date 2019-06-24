@@ -22,12 +22,14 @@ function AfterVoting (props) {
       )
     }
 
-    let leagueTableXhtml 
+    let leagueTableXhtml
     
+    // test for tied result
     if (pollResults.length > 1
       && pollResults[0].popularity === pollResults[1].popularity)
     {
-      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
+      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity);
+
       if (runnersUp.length > 0)
       {runnersUp = (
         <div>
@@ -36,7 +38,8 @@ function AfterVoting (props) {
             {listings(runnersUp)}
           </ul>
         </div>
-      )}
+      )};
+
       leagueTableXhtml = (
       <section>
         <h3>Joint winners</h3>
@@ -50,28 +53,7 @@ function AfterVoting (props) {
       leagueTableXhtml = (<ol>{listings(pollResults)}</ol>)
     }
     
-
     return leagueTableXhtml
-    
-  //   ( pollResults.length > 1
-  //     && pollResults[0].popularity === pollResults[1].popularity
-  //   )
-  //   ?
-  //   (
-  //     <section>
-  //       <h3>Joint winners</h3>
-  //       <ul>
-  //         {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
-  //       </ul>
-  //       {if (true) {'oh'}}
-
-  //       <h3>Runners up</h3>
-  //       <p>Tied result zero {pollResults[0].popularity} One {pollResults[1].popularity}</p>
-        
-  //     </section>
-  //   )
-  //   :
-    
   }
 
   return (
