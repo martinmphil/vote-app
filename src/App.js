@@ -86,6 +86,7 @@ function App() {
         user = {user}
         handleVote = {handleVote}
         candidates = {candidates}
+        topic = {topic}
       />
     )} else { return (
       <AfterVoting
@@ -109,14 +110,16 @@ function App() {
         />
       }
 
-      <LogIn
-        commons = {commons}
-        handleLogin = {handleLogin}
-      />
+      <header>
+        <LogIn
+          commons = {commons}
+          user = {user}
+          handleLogin = {handleLogin}
+        />
+      </header>
 
       <main>
-        <h1>Vote app</h1>
-        <h2 id="topicHeading">{topic}</h2>
+        <h1 className="app-name">Vote app</h1>
         <MainXhtml />
         <hr />
       </main>

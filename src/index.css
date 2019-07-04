@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color:#ffffcc;
+  background-color: hsl(269, 41%, 90%);
   font-family: 'IBM Plex Sans', 'Ubuntu', 'Cabin', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -56,42 +56,60 @@ function AfterVoting (props) {
     return leagueTableXhtml
   }
 
+  function CheckForNewVotesButton() {
+    return (
+      <div>
+        <p>Still voting</p>
+        <button 
+          type="button"
+          className="check-for-new-votes"
+          onClick= {props.checkCloudFn}
+        >
+          Check for new votes
+        </button>
+      </div>
+    )
+  }
+
   return (
     <article>
-      <button type="button" onClick= {props.checkCloudFn}>
-        Check for new votes
-      </button>
-      <p>
-        {(props.votes.filter(v => v === 999999).length <= 0 ) ? 'Poll closed' : 'Still voting'}
-      </p>
 
-      <LeagueTable />
+      <div className="results-table">
+        <h4>Results</h4>
+        <LeagueTable />
+      </div>
+
+      <div>
+        {(props.votes.filter(v => v === 999999).length <= 0 ) ? 'Poll closed' : <CheckForNewVotesButton /> }
+      </div>
 
       <h4>Votes Cast</h4>
-      {props.votes.map(
-        (v, index) => {
-          const user = props.commons[index]
-          if (v === 999999) {
-            return (
-            <section
-              key={user}
-              className = "castVote"
-            >
-              <p>No vote from {user}.</p>
-            </section>
-          )
-          } else {
-            return (
-            <section
-              key={user}
-              className = "castVote"
-            >
-              <p>{user} voted for:- "{props.candidates[v]}"</p>
-            </section>
-          )
+      <div className="cast-votes-container">
+        {props.votes.map(
+          (v, index) => {
+            const user = props.commons[index]
+            if (v === 999999) {
+              return (
+              <section
+                key={user}
+                className = "castVote"
+              >
+                <p>No vote from {user}.</p>
+              </section>
+            )
+            } else {
+              return (
+              <section
+                key={user}
+                className = "castVote"
+              >
+                <p>{user} voted for:- "{props.candidates[v]}"</p>
+              </section>
+            )
+            }
           }
-        }
-      )}
+        )}
+      </div>
     </article>
   )
 }
