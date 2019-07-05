@@ -29,7 +29,7 @@ header {
   text-align: center;
 }
 
-.app-name {
+.app-name, .results-header {
   font-weight: lighter;
   font-size: 120%;
   color: hsl(215, 22%, 30%)

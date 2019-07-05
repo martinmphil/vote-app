@@ -110,13 +110,11 @@ function App() {
         />
       }
 
-      <header>
-        <LogIn
-          commons = {commons}
-          user = {user}
-          handleLogin = {handleLogin}
-        />
-      </header>
+      <LogIn
+        commons = {commons}
+        user = {user}
+        handleLogin = {handleLogin}
+      />
 
       <main>
         <h1 className="app-name">Vote app</h1>

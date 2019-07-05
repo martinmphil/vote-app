@@ -2,7 +2,7 @@ import React from 'react'
 
 function LogIn (props) {
   return (
-    <div>
+    <header>
       <div className="current-user">
         You are currently logged in as:- <br/>
         <span className="user-name">{props.user} </span><br/>
@@ -26,7 +26,7 @@ function LogIn (props) {
           )}
         </select>
       </form>
-    </div>
+    </header>
   )
 }
 

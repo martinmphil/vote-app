@@ -73,9 +73,9 @@ function AfterVoting (props) {
 
   return (
     <article>
+      <h2 className="results-header">Results</h2>
 
       <div className="results-table">
-        <h4>Results</h4>
         <LeagueTable />
       </div>
 
