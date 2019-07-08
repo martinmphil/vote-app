@@ -71,6 +71,9 @@ function AfterVoting (props) {
     )
   }
 
+  // Extra cloud entires produce a votes array too long for this commons
+  // hence votes.slice(0, props.commons.length)
+
   return (
     <article>
       <h2 className="results-header">Results</h2>
@@ -80,12 +83,12 @@ function AfterVoting (props) {
       </div>
 
       <div>
-        {(props.votes.filter(v => v === 999999).length <= 0 ) ? 'Poll closed' : <CheckForNewVotesButton /> }
+        {(props.polling === false) ? 'Poll closed' : <CheckForNewVotesButton /> }
       </div>
 
       <h4>Votes Cast</h4>
       <div className="cast-votes-container">
-        {props.votes.map(
+        {props.votes.slice(0, props.commons.length).map(
           (v, index) => {
             const user = props.commons[index]
             if (v === 999999) {

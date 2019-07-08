@@ -23,7 +23,7 @@ function ClearVotesButton (props) {
       await batch.commit().catch( (err) => 
         console.log('Error in resetting votes ', err)
       )
-      props.checkCloudFn()
+      props.fetchData()
     }
     commitBatch()
   }

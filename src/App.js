@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import db from './private/privateData'
 import './App.css'
 import ClearVotesButton from './ClearVotesButton'
@@ -30,36 +30,62 @@ function App() {
     "Crit"
   ]
 
-  // Index of votes array exactly matches the index of commons array,
+  // Index of votes array matches index of commons array,
   // thus correlating cast votes to specific users.
-  // Votes array elements are preset to a value of 999999.
-  // When a vote is cast, the votes array records the number value 
-  // of the index for their preference in the candidate array.
+  // The cloud database presets votes array elements to a value of 999999.
+  // When casting a vote, the votes array records 
+  // the index value for their preference from the candidate array.
 
   // Set App state.
-  const [user, setUser] = useState( commons[0] )
+  const [user, setUser] = useState(commons[0])
   const [votes, setVotes] = useState([])
+  const [eligible, setEligible] = useState(true)
+  const [online, setOnline] = useState(false)
+  const [polling, setPolling] = useState(true)
 
-  // Setting local votes to match cloud data.
-  const checkCloudFn = useCallback( () => {
-    const fetchData = async () => {
-      const cloudData = await(
-        db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
-        .get().then( querySnapshot =>
-          querySnapshot.docs.map( doc => doc.data().v )
-        ).catch(function(error) {console.log("Error reading cloud data:", error)})
-      )
-      setVotes( cloudData.slice(0, commons.length) )      
-    }
-    fetchData()
-  }, [commons.length])
+
+  // Sets local votes to cloud data.
+  const fetchData = async () => {
+
+    const cloudData = await(
+      db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z').collection('commons')
+      .get().then( querySnapshot =>
+        querySnapshot.docs.map( doc => doc.data().v )
+      ).catch(function(error) {console.log("Error reading cloud data:", error)})
+    )
+    setVotes(cloudData)
+
+    if (cloudData.length === 0) {setOnline(false)} else {setOnline(true)}
+  }
+
 
   // Check cloud on start-up.
   useEffect( () => {
-    checkCloudFn()
-  },[checkCloudFn])
+    fetchData()
+  }, [])
+
+
+  // Extra cloud entries will produce a votes array too long for this commons
+  // hence votes.slice(0, props.commons.length)
+  useEffect( () => {
+
+    // Close poll if entire commons has voted.
+    if (
+      votes.length > 0 && 
+      votes.slice(0, commons.length).filter(v => v !== 999999).length === commons.length
+      ) {
+      setPolling(false)
+    }
+
+    // Sets eligible state if handleLogin changes user.
+    if (votes[commons.indexOf(user)] !== 999999) {setEligible(false)}
+    else {setEligible(true)}
+
+  }, [votes, commons, polling, user])
+
 
   const handleVote = async (candidateIndex) => {
+    setEligible(false)
     const userIndex = commons.indexOf(user)
     const voteRef =
       db.collection('an_organiser').doc('2019-06-17T09:22:33.456Z')
@@ -77,36 +103,22 @@ function App() {
     window.scrollTo(0,0);
   }
 
-  const handleLogin = (e) => { setUser(e.target.value) }
 
-  // Determine components inside main tag before and after voting.
-  function MainXhtml() {
-    if (votes[commons.indexOf(user)] === 999999) { return (
-      <BallotPaper
-        user = {user}
-        handleVote = {handleVote}
-        candidates = {candidates}
-        topic = {topic}
-      />
-    )} else { return (
-      <AfterVoting
-        commons = {commons}
-        candidates = {candidates}
-        votes = {votes}
-        checkCloudFn = {checkCloudFn}
-      />
-    )}
+  // Change user.
+  const handleLogin = (e) => {
+    setUser(e.target.value)
   }
+
 
 
   return (
     <div className="App">
 
       {//NB true && expression evaluates to expression, false && expression evaluates to false.
-        (commons.indexOf(user) === 0) &&
+      (commons.indexOf(user) === 0) &&
         <ClearVotesButton
           commons = {commons}
-          checkCloudFn = {checkCloudFn}
+          fetchData = {fetchData}
         />
       }
 
@@ -118,7 +130,31 @@ function App() {
 
       <main>
         <h1 className="app-name">Vote app</h1>
-        <MainXhtml />
+
+        {(online === false) && 
+          <p>Our ballot box is currently off line. Please try again later.</p>
+        }
+
+        {(online && eligible) && 
+          <p className="user-name"><em>{user}</em>, please cast your vote.</p>
+        }
+
+        {eligible ? 
+          <BallotPaper
+            user = {user}
+            handleVote = {handleVote}
+            candidates = {candidates}
+            topic = {topic}
+            online = {online}
+          />
+        :
+          <AfterVoting
+            commons = {commons}
+            candidates = {candidates}
+            votes = {votes}
+            polling = {polling}
+          />
+        }
         <hr />
       </main>
 

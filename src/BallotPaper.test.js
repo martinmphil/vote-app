@@ -9,6 +9,8 @@ const candidates = [
   "option3"
 ]
 
+const online = true
+
 let container
 
 beforeEach(() => {
@@ -27,7 +29,8 @@ it('renders and handles vote', () => {
     ReactDOM.render(<BallotPaper
       // user = {user}
       handleVote = {handleVote}
-      candidates = {candidates} 
+      candidates = {candidates}
+      online = {online}
     />, container);
   })
 
