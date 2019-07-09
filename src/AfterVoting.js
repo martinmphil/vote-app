@@ -11,7 +11,7 @@ function AfterVoting (props) {
         {candidate: c, popularity: (props.votes.filter( v => v === index ).length ) }
       )})
       .filter( p => p.popularity > 0 )
-      .sort( (a, b) => b.popularity - a.popularity)
+      .sort( (a, b) => b.popularity - a.popularity )
 
     function listings (array) {
       return array.map(d => 
@@ -28,29 +28,32 @@ function AfterVoting (props) {
     if (pollResults.length > 1
       && pollResults[0].popularity === pollResults[1].popularity)
     {
-      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity);
-
-      if (runnersUp.length > 0)
-      {runnersUp = (
-        <div>
-          <h4>Runners up</h4>
-          <ul>
-            {listings(runnersUp)}
-          </ul>
-        </div>
-      )};
+      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
 
       leagueTableXhtml = (
-      <section>
-        <h3>Joint winners</h3>
-        <ul>
-          {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
-        </ul>
-        {runnersUp}
-      </section>
+        <section>
+          <h3>Joint winners</h3>
+          <ul>
+            {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
+          </ul>
+          {(runnersUp.length > 0) && <h4>{runnersUp.length === 1 ? 'Runner' : 'Runners'} up</h4>}
+          <ul>{listings(runnersUp)}</ul>
+        </section>
       )
     } else {
-      leagueTableXhtml = (<ol>{listings(pollResults)}</ol>)
+      let alsoRan = pollResults.slice(1)
+      leagueTableXhtml = (
+        <section>
+          <h3>
+            Winner
+          </h3>
+          <ul>
+            { (pollResults.length > 0) && listings( pollResults.slice(0,1) ) }
+          </ul>
+          {(alsoRan.length > 0) && <h4>{alsoRan.length === 1 ? 'Runner' : 'Runners'} up</h4>}
+          <ul>{listings(alsoRan)}</ul>
+        </section>
+      )
     }
     
     return leagueTableXhtml
@@ -63,7 +66,7 @@ function AfterVoting (props) {
         <button 
           type="button"
           className="check-for-new-votes"
-          onClick= {props.checkCloudFn}
+          onClick= {props.fetchData}
         >
           Check for new votes
         </button>

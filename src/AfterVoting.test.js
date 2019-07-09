@@ -17,6 +17,8 @@ const commons = [
   "user3"
 ]
 
+const polling = true
+
 let container
 
 beforeEach(() => {
@@ -35,6 +37,7 @@ it('renders', () => {
       commons = {commons}
       candidates = {candidates}
       votes = {votes}
+      polling = {polling}
     />, container)
   })
 
