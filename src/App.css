@@ -43,7 +43,7 @@ header {
   color: hsl(0, 70%, 42%)
 }
 
-.candidate, .castVote {
+.candidate {
   margin-bottom: 2em;
   margin-left: auto;
   margin-right: auto;
@@ -75,6 +75,17 @@ header {
 
 .castVote {
   text-align: center;
+  margin-bottom: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+  border-style: solid;
+  border-width: thin;
+  max-width: 24em;
+  background-color: hsl(240, 100%, 90%);
+  border-color: hsl(240, 100%, 80%);
+  border-radius: 0.5em;
+  box-shadow: inset 0 -0.2em 0 hsla(0, 0%, 100%, 0.3), inset 0 0.2em 0.2em hsla(0, 0%, 0%, 0.4);
 }
 
 .results-table {
