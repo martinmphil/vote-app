@@ -27,7 +27,8 @@ function App() {
     "Star",
     "York",
     "Flff",
-    "Crit"
+    "Crit",
+    "Baz"
   ]
 
   // Index of votes array matches index of commons array,
@@ -153,6 +154,7 @@ function App() {
             candidates = {candidates}
             votes = {votes}
             polling = {polling}
+            fetchData = {fetchData}
           />
         }
         <hr />
