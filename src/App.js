@@ -37,13 +37,12 @@ function App() {
   // When casting a vote, the votes array records 
   // the index value for their preference from the candidate array.
 
-  // Set App state.
+  // Set app state.
   const [user, setUser] = useState(commons[0])
   const [votes, setVotes] = useState([])
   const [eligible, setEligible] = useState(true)
   const [online, setOnline] = useState(false)
   const [polling, setPolling] = useState(true)
-
 
   // Sets local votes to cloud data.
   const fetchData = async () => {
@@ -59,12 +58,10 @@ function App() {
     if (cloudData.length === 0) {setOnline(false)} else {setOnline(true)}
   }
 
-
   // Check cloud on start-up.
   useEffect( () => {
     fetchData()
   }, [])
-
 
   // Extra cloud entries will produce a votes array too long for this commons
   // hence votes.slice(0, props.commons.length)
@@ -83,7 +80,6 @@ function App() {
     else {setEligible(true)}
 
   }, [votes, commons, polling, user])
-
 
   const handleVote = async (candidateIndex) => {
     setEligible(false)
@@ -104,12 +100,10 @@ function App() {
     window.scrollTo(0,0);
   }
 
-
   // Change user.
   const handleLogin = (e) => {
     setUser(e.target.value)
   }
-
 
 
   return (
