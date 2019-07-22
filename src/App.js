@@ -4,6 +4,7 @@ import './App.css'
 import ClearVotesButton from './ClearVotesButton'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
+import LeagueTable from './LeagueTable'
 import AfterVoting from './AfterVoting'
 
 function App() {
@@ -133,6 +134,14 @@ function App() {
         {(online && eligible) && 
           <p className="user-name"><em>{user}</em>, please cast your vote.</p>
         }
+
+        <LeagueTable 
+            user = {user}
+            votes = {votes}
+            candidates = {candidates}
+            topic = {topic}
+            online = {online}
+        />
 
         {eligible ? 
           <BallotPaper

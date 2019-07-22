@@ -3,7 +3,7 @@
   margin: 1em;
 }
 
-.clearAllVotes, .check-for-new-votes {
+/* .clearAllVotes, .check-for-new-votes {
   cursor: pointer;
   border-radius: 0.5em;
   padding: .4em;
@@ -14,7 +14,7 @@
 .clearAllVotes:hover, .check-for-new-votes:hover {
   background-color: white;
   border-color: hsl(212, 19%, 84%);
-}
+} */
 
 main, header {
   max-width: 36em;
@@ -29,11 +29,11 @@ header {
   text-align: center;
 }
 
-.app-name, .results-header {
+/* .app-name, .results-header {
   font-weight: lighter;
   font-size: 120%;
   color: hsl(215, 22%, 30%)
-}
+} */
 
 .current-user {
   color: hsl(215, 22%, 30%)
@@ -73,7 +73,7 @@ header {
   color: black;
 }
 
-.castVote {
+/* .castVote {
   text-align: center;
   margin-bottom: 2em;
   margin-left: auto;
@@ -86,12 +86,12 @@ header {
   border-color: hsl(240, 100%, 80%);
   border-radius: 0.5em;
   box-shadow: inset 0 -0.2em 0 hsla(0, 0%, 100%, 0.2), inset 0 0.2em 0.2em hsla(0, 0%, 0%, 0.4);
-}
+} */
 
-.results-table {
+/* .results-table {
   max-width: 36em;
   margin: auto;
-}
+} */
 
 /* responsive web design */
 @media only screen and (min-width: 36em) {
