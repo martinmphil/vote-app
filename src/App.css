@@ -1,6 +1,5 @@
 .App {
   height: 100vh;
-  margin: 1em;
 }
 
 /* .clearAllVotes, .check-for-new-votes {
@@ -16,16 +15,16 @@
   border-color: hsl(212, 19%, 84%);
 } */
 
-main, header {
+/* main, header {
   max-width: 36em;
   margin: auto;
-}
+} */
 
-header {
+/* header {
   text-align: center;
-}
+} */
 
-.topicHeading {
+.topic-heading {
   text-align: center;
 }
 
@@ -73,6 +72,43 @@ header {
   color: black;
 }
 
+
+
+.results-overlay-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.results-overlay {
+  background-color: hsl(0, 0%, 5%);
+  color: hsl(60, 100%, 90%);
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1em;
+  padding-bottom: 2em;
+  animation-duration: 3s;
+  animation-name: slide-down;
+}
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translate(0, -100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+
+
+
+
+
+
 /* .castVote {
   text-align: center;
   margin-bottom: 2em;
@@ -100,6 +136,12 @@ header {
     margin-left: auto;
     margin-right: auto;
   }
+  /* .results-overlay {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+  } */
   .ballot-paper-container, .cast-votes-container {
     display: flex;
     flex-wrap: wrap;

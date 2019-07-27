@@ -4,7 +4,7 @@ import VoteButton from './VoteButton'
 function BallotPaper (props) {
   return (
     <article>
-      <h2 className="topicHeading">{props.topic}</h2>
+      <h2 className="topic-heading">{props.topic}</h2>
       <div className="ballot-paper-container">
         {props.candidates.map( (candidate, index) => 
           <section
@@ -12,12 +12,10 @@ function BallotPaper (props) {
             className = "candidate"
           >
             {candidate}
-            {props.online &&
-              <VoteButton
-                candidateIndex = {index}
-                handleVote = {props.handleVote}
-              />
-            }
+            <VoteButton
+              candidateIndex = {index}
+              handleVote = {props.handleVote}
+            />
           </section>
         )}
       </div>
