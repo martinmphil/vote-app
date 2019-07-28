@@ -23,15 +23,34 @@ function ClearVotesButton (props) {
       await batch.commit().catch( (err) => 
         console.log('Error in resetting votes ', err)
       )
-      props.fetchData()
     }
     commitBatch()
+    props.toggleOrganiser()
+    props.hideResults()
   }
 
   return (
-    <button className='clearAllVotes' type="button" onClick={clearAllVotesUpdater} >
-      Clear all
-    </button>
+    <div>
+
+      <button
+        className = "secondary-button"
+        type="button"
+        onClick={ () => props.toggleOrganiser() }
+      >
+        Organiser?
+      </button> &nbsp;
+
+      <button
+        className= {`danger-button ${props.organiser ? '' : 'hidden'}`}
+        type = "button"
+        onClick = {clearAllVotesUpdater}
+      >
+        Clear all
+      </button>
+
+    </div>
+
+
   )
 
 }

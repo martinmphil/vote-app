@@ -22,7 +22,7 @@ it('renders and reacts to button clicks', () => {
     ReactDOM.render(<VoteButton handleVote={handleVote} />, container)
   })
 
-  const button = container.querySelector('.voteButton')
+  const button = container.querySelector('.primary-button')
   expect(button.getAttribute('type')).toMatch(/button/)
 
   act(() => {

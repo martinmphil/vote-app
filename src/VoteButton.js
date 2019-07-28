@@ -4,7 +4,7 @@ function VoteButton (props) {
 
   return (
     <button
-      className = "voteButton"
+      className = "primary-button"
       type="button"
       onClick={ () => props.handleVote(props.candidateIndex) }
     >

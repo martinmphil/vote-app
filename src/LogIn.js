@@ -2,9 +2,9 @@ import React from 'react'
 
 function LogIn (props) {
   return (
-    <div className="current-user">
+    <div>
       Logged-in as <span className="user-name">{props.user}</span>. &nbsp;
-      <label className="current-user" htmlFor="login">
+      <label htmlFor="login">
         Change user➜
       </label>
       <select

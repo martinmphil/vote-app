@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import db from './private/privateData'
 import './App.css'
 import Spinner from './Spinner'
-// import ClearVotesButton from './ClearVotesButton'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
 import LeagueTable from './LeagueTable'
 // import AfterVoting from './AfterVoting'
+import ClearVotesButton from './ClearVotesButton'
 
 // NB snapshot.docs[0].data().v and voteIndex: docs.id, ...docs.data().v
 
@@ -65,6 +65,7 @@ function App() {
   console.log(votes) //NB REMOVE
   const [user, setUser] = useState(commons[0])
   const [showWinner, setShowWinner] = useState(false)
+  const [organiser, setOrganiser] = useState(false)
 
   // This function checks if this user already voted.
   useEffect( ()=>{
@@ -72,9 +73,13 @@ function App() {
       {setShowWinner(true)}
   }, [votes, user])
 
-  // This function handles clicking a button to close the results league table overlay.
+  // This function handles clicking a button to remove the results league-table overlay.
   const hideResults = () => {
     setShowWinner(false)
+  }
+
+  const toggleOrganiser = () => {
+    organiser ? setOrganiser(false) : setOrganiser(true)
   }
 
   const handleVote = async (candidateIndex) => {
@@ -109,13 +114,28 @@ function App() {
         />
       }
 
-      <LogIn
-        commons = {commons}
-        user = {user}
-        handleLogin = {handleLogin}
-      />
+      <header>
+        {(votes[commons.indexOf(user)] === 999999) ?
+          <span className="user-name"><em>{user}</em>, please cast your vote.</span> :
+          <button
+            className = "secondary-button"
+            type="button"
+            onClick={ () => setShowWinner(true) }
+          >
+            Show results
+          </button>
+        }
+        <LogIn
+          commons = {commons}
+          user = {user}
+          handleLogin = {handleLogin}
+        />
+      </header>
 
-      <main>
+      <main
+        onClick={() => setShowWinner(false)}
+        className = {showWinner ? 'misty' : ''}
+      >
         <h1 className="app-name">Vote app</h1>
 
         <Spinner votes={votes} commons={commons}/>
@@ -135,7 +155,14 @@ function App() {
 
 
         <hr />
-        <p>Organiser? </p>
+
+        <ClearVotesButton
+          commons = {commons}
+          organiser = {organiser}
+          toggleOrganiser = {toggleOrganiser}
+          hideResults = {hideResults}
+        />
+        <hr />
       </main>
 
     </div>
