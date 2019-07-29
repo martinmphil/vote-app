@@ -59,25 +59,37 @@ function AfterVoting (props) {
     return leagueTableXhtml
   }
 
+  function CheckForNewVotesButton() {
+    return (
+      <div>
+        <p>Still voting</p>
+        <button 
+          type="button"
+          className="check-for-new-votes"
+          onClick= {props.fetchData}
+        >
+          Check for new votes
+        </button>
+      </div>
+    )
+  }
 
   // Extra cloud entires produce a votes array too long for this commons
   // hence votes.slice(0, props.commons.length)
 
   return (
     <article>
+      <h2 className="results-header">Results</h2>
 
-      {//NB true && expression evaluates to expression; false && expression evaluates to false.
-        (props.votes.filter(v => v < 999999).length >= props.commons.length) &&
-        <p>Poll closed</p>
-      }
-
-
-      <div>
-        {/* TEST FOR POLL CLOSED */}
-        {/* {if (props.votes.filter((v) => {v <= 999999})) ? 'Poll closed' : '' } */}
+      <div className="results-table">
+        <LeagueTable />
       </div>
 
-      <h1>Votes Cast</h1>
+      <div>
+        {(props.polling === false) ? 'Poll closed' : <CheckForNewVotesButton /> }
+      </div>
+
+      <h4>Votes Cast</h4>
       <div className="cast-votes-container">
         {props.votes.slice(0, props.commons.length).map(
           (v, index) => {

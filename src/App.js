@@ -5,7 +5,7 @@ import Spinner from './Spinner'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
 import LeagueTable from './LeagueTable'
-// import AfterVoting from './AfterVoting'
+import AfterVoting from './AfterVoting'
 import ClearVotesButton from './ClearVotesButton'
 
 // NB snapshot.docs[0].data().v and voteIndex: docs.id, ...docs.data().v
@@ -95,6 +95,9 @@ function App() {
   // Change user.
   const handleLogin = (e) => {
     setUser(e.target.value)
+    if (votes[commons.indexOf(e.target.value)] === 999999) {
+      setShowWinner(false)
+    }
   }
 
 
@@ -102,7 +105,7 @@ function App() {
     <div className="App">
 
       {//NB true && expression evaluates to expression; false && expression evaluates to false.
-      showWinner &&
+        showWinner &&
         <LeagueTable
           votes = {votes}
           candidates = {candidates}
@@ -116,7 +119,7 @@ function App() {
 
       <header>
         {(votes[commons.indexOf(user)] === 999999) ?
-          <span className="user-name"><em>{user}</em>, please cast your vote.</span> :
+          <span><em className="user-name">{user}</em>, please cast your vote.</span> :
           <button
             className = "secondary-button"
             type="button"
@@ -146,15 +149,16 @@ function App() {
           candidates = {candidates}
           topic = {topic}
         />
-
-
-
-
-
-        {/* {votes.map(v=>(<p>{v}</p>))} */}
-
-
         <hr />
+
+        {//NB true && expression evaluates to expression; false && expression evaluates to false.
+          (votes[commons.indexOf(user)] < 999999) &&
+          <AfterVoting
+            commons = {commons}
+            candidates = {candidates}
+            votes = {votes}
+          />
+        }
 
         <ClearVotesButton
           commons = {commons}
