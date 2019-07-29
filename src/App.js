@@ -74,7 +74,7 @@ function App() {
   }, [votes, user])
 
   // This function handles clicking a button to remove the results league-table overlay.
-  const hideResults = () => {
+  const clickToHideWinnerFn = () => {
     setShowWinner(false)
   }
 
@@ -110,16 +110,17 @@ function App() {
           votes = {votes}
           candidates = {candidates}
           topic = {topic}
-          hideResults = {hideResults}
+          clickToHideWinnerFn = {clickToHideWinnerFn}
           commons = {commons}
           user = {user}
           handleLogin = {handleLogin}
+          showWinner = {showWinner}
         />
       }
 
       <header>
         {(votes[commons.indexOf(user)] === 999999) ?
-          <span><em className="user-name">{user}</em>, please cast your vote.</span> :
+          <span>Cast your vote.</span> :
           <button
             className = "secondary-button"
             type="button"
@@ -139,7 +140,7 @@ function App() {
         onClick={() => setShowWinner(false)}
         className = {showWinner ? 'misty' : ''}
       >
-        <h1 className="app-name">Vote app</h1>
+        <h1 className="subtle-heading">Vote app</h1>
 
         <Spinner votes={votes} commons={commons}/>
 
@@ -148,6 +149,8 @@ function App() {
           handleVote = {handleVote}
           candidates = {candidates}
           topic = {topic}
+          clickToHideWinnerFn = {clickToHideWinnerFn}
+          showWinner = {showWinner}
         />
         <hr />
 
@@ -164,7 +167,7 @@ function App() {
           commons = {commons}
           organiser = {organiser}
           toggleOrganiser = {toggleOrganiser}
-          hideResults = {hideResults}
+          clickToHideWinnerFn = {clickToHideWinnerFn}
         />
         <hr />
       </main>

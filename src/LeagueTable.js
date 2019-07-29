@@ -28,7 +28,7 @@ function LeagueTable (props) {
     return (
       <div className="results-overlay-header">
         <button
-          onClick={ () => props.hideResults() }
+          onClick={ () => props.clickToHideWinnerFn() }
         >
           Close results
         </button>

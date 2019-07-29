@@ -26,7 +26,7 @@ function ClearVotesButton (props) {
     }
     commitBatch()
     props.toggleOrganiser()
-    props.hideResults()
+    props.clickToHideWinnerFn()
   }
 
   return (

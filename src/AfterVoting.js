@@ -2,64 +2,6 @@ import React from 'react'
 
 function AfterVoting (props) {
 
-  function LeagueTable() {
-
-    // pollResults, ordered by popularity, 
-    // contains array of {candidate: "candidate_x", popularity: number}
-    const pollResults = props.candidates.map(
-      (c, index) => { return (
-        {candidate: c, popularity: (props.votes.filter( v => v === index ).length ) }
-      )})
-      .filter( p => p.popularity > 0 )
-      .sort( (a, b) => b.popularity - a.popularity )
-
-    function listings (array) {
-      return array.map(d => 
-        <li key={d.candidate}>
-          "{d.candidate}"" gained {d.popularity}
-          {d.popularity === 1 ? ' vote' : ' votes'}
-        </li>
-      )
-    }
-
-    let leagueTableXhtml
-    
-    // test for tied result
-    if (pollResults.length > 1
-      && pollResults[0].popularity === pollResults[1].popularity)
-    {
-      let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
-
-      leagueTableXhtml = (
-        <section>
-          <h3>Joint winners</h3>
-          <ul>
-            {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity) )}
-          </ul>
-          {(runnersUp.length > 0) && <h4>{runnersUp.length === 1 ? 'Runner' : 'Runners'} up</h4>}
-          <ul>{listings(runnersUp)}</ul>
-        </section>
-      )
-    } else {
-      let alsoRan = pollResults.slice(1)
-      leagueTableXhtml = (
-        <section>
-          <h3>
-            Winner
-          </h3>
-          <ul>
-            { (pollResults.length > 0) && listings( pollResults.slice(0,1) ) }
-          </ul>
-          {(alsoRan.length > 0) && <h4>{alsoRan.length === 1 ? 'Runner' : 'Runners'} up</h4>}
-          <ul>{listings(alsoRan)}</ul>
-        </section>
-      )
-    }
-    
-    return leagueTableXhtml
-  }
-
-
   // Extra cloud entires produce a votes array too long for this commons
   // hence votes.slice(0, props.commons.length)
 
@@ -71,39 +13,31 @@ function AfterVoting (props) {
         <p>Poll closed</p>
       }
 
-
-      <div>
-        {/* TEST FOR POLL CLOSED */}
-        {/* {if (props.votes.filter((v) => {v <= 999999})) ? 'Poll closed' : '' } */}
-      </div>
-
-      <h1>Votes Cast</h1>
-      <div className="cast-votes-container">
+      <h1 className="subtle-heading" >Votes Cast</h1>
+      <ul>
         {props.votes.slice(0, props.commons.length).map(
           (v, index) => {
             const user = props.commons[index]
             if (v === 999999) {
               return (
-              <section
+              <li
                 key={user}
-                className = "castVote"
               >
                 <p>No vote from {user}.</p>
-              </section>
+              </li>
             )
             } else {
               return (
-              <section
+              <li
                 key={user}
-                className = "castVote"
               >
-                <p>{user} voted for:- "{props.candidates[v]}"</p>
-              </section>
+                <p>{user} voted for "{props.candidates[v]}"</p>
+              </li>
             )
             }
           }
         )}
-      </div>
+      </ul>
     </article>
   )
 }

@@ -15,6 +15,8 @@ function BallotPaper (props) {
             <VoteButton
               candidateIndex = {index}
               handleVote = {props.handleVote}
+              clickToHideWinnerFn = {props.clickToHideWinnerFn}
+              showWinner = {props.showWinner}
             />
           </section>
         )}

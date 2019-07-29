@@ -2,25 +2,21 @@
   height: 100vh;
 }
 
-/* main {
-  max-width: 36em;
-  margin: auto;
-} */
-
-.topic-heading {
-  text-align: center;
+/* utility classes */
+.hidden {
+  display: none;
 }
-
-/* .app-name {
+.misty {
+  opacity: 0.5;
+}
+.subtle-heading {
   font-weight: lighter;
   font-size: 120%;
   color: hsl(215, 22%, 30%)
-} */
+}
 
-
-.user-name {
-  /* color: hsl(0, 70%, 42%) */
-  color: hsl(30, 100%, 50%);
+.topic-heading {
+  text-align: center;
 }
 
 .candidate {
@@ -53,15 +49,6 @@
   color: black;
 }
 
-
-
-
-.hidden {
-  display: none;
-}
-.misty {
-  opacity: 0.5;
-}
 header, .results-overlay-header {
   display: flex;
   flex-wrap: wrap;
@@ -75,12 +62,13 @@ header, .results-overlay-header {
   top: 0;
   left: 0;
   width: 100%;
-  height: 80vh;
+  max-height: 80vh;
   overflow-y: auto;
   padding: 1em;
   padding-bottom: 2em;
   animation-duration: 3s;
   animation-name: slide-down;
+  animation-fill-mode: forwards;
 }
 @keyframes slide-down {
   0% {
@@ -92,34 +80,6 @@ header, .results-overlay-header {
     transform: translate(0, 0);
   }
 }
-
-
-
-
-
-
-
-/* .castVote {
-  text-align: center;
-  margin-bottom: 2em;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 1em;
-  border-style: solid;
-  border-width: thin;
-  max-width: 24em;
-  background-color: hsl(240, 100%, 90%);
-  border-color: hsl(240, 100%, 80%);
-  border-radius: 0.5em;
-  box-shadow: inset 0 -0.2em 0 hsla(0, 0%, 100%, 0.2), inset 0 0.2em 0.2em hsla(0, 0%, 0%, 0.4);
-} */
-
-/* .results-table {
-  max-width: 36em;
-  margin: auto;
-} */
-
-
 
 .secondary-button {
   cursor: pointer;
@@ -144,7 +104,6 @@ header, .results-overlay-header {
 .danger-button:hover {
   color: red;
   background-color: white;
-  /* border-color: hsl(212, 19%, 84%); */
 }
 
 /* responsive web design */
@@ -154,17 +113,11 @@ header, .results-overlay-header {
     margin-left: auto;
     margin-right: auto;
   }
-  /* .results-overlay {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-  } */
-  .ballot-paper-container, .cast-votes-container {
+  .ballot-paper-container {
     display: flex;
     flex-wrap: wrap;
   }
-  .candidate, .castVote {
+  .candidate {
     width: 24em;
   }
 }

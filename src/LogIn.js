@@ -3,7 +3,7 @@ import React from 'react'
 function LogIn (props) {
   return (
     <div>
-      Logged-in as <span className="user-name">{props.user}</span>. &nbsp;
+      Logged-in as <strong>{props.user}</strong>. &nbsp;
       <label htmlFor="login">
         Change user➜
       </label>
