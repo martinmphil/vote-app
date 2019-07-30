@@ -3,13 +3,21 @@ import ReactDOM from 'react-dom'
 import { act } from 'react-dom/test-utils'
 import BallotPaper from './BallotPaper'
 
+const votes = [0, 0, 1]
+
 const candidates = [
   "option1",
   "option2",
   "option3"
 ]
 
-const online = true
+const commons = [
+  "user1",
+  "user2",
+  "user3"
+]
+
+const user = "user1"
 
 let container
 
@@ -27,10 +35,11 @@ it('renders and handles vote', () => {
   const handleVote = jest.fn()
   act(() => {
     ReactDOM.render(<BallotPaper
-      // user = {user}
+      user = {user}
       handleVote = {handleVote}
       candidates = {candidates}
-      online = {online}
+      commons = {commons}
+      votes = {votes}
     />, container);
   })
 

@@ -5,7 +5,7 @@ import Spinner from './Spinner'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
 import LeagueTable from './LeagueTable'
-import AfterVoting from './AfterVoting'
+import CastVotes from './CastVotes'
 import ClearVotesButton from './ClearVotesButton'
 
 // NB snapshot.docs[0].data().v and voteIndex: docs.id, ...docs.data().v
@@ -146,6 +146,8 @@ function App() {
 
         <BallotPaper
           user = {user}
+          votes = {votes}
+          commons = {commons}
           handleVote = {handleVote}
           candidates = {candidates}
           topic = {topic}
@@ -156,7 +158,7 @@ function App() {
 
         {//NB true && expression evaluates to expression; false && expression evaluates to false.
           (votes[commons.indexOf(user)] < 999999) &&
-          <AfterVoting
+          <CastVotes
             commons = {commons}
             candidates = {candidates}
             votes = {votes}

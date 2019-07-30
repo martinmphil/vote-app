@@ -14,6 +14,9 @@ function BallotPaper (props) {
             {candidate}
             <VoteButton
               candidateIndex = {index}
+              user = {props.user}
+              votes = {props.votes}
+              commons = {props.commons}
               handleVote = {props.handleVote}
               clickToHideWinnerFn = {props.clickToHideWinnerFn}
               showWinner = {props.showWinner}

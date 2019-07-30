@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { act } from 'react-dom/test-utils'
-import AfterVoting from './AfterVoting'
+import CastVotes from './CastVotes'
 
 const votes = [0, 0, 1]
 
@@ -33,7 +33,7 @@ afterEach(() => {
 
 it('renders', () => {
   act(() => {
-    ReactDOM.render(<AfterVoting 
+    ReactDOM.render(<CastVotes 
       commons = {commons}
       candidates = {candidates}
       votes = {votes}

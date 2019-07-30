@@ -2,8 +2,10 @@ import React from 'react'
 
 function VoteButton (props) {
 
+  //NB In React style attributes must be objects
   let mistyButtonStyle
 
+  // Vote buttons look pale when displaying results.
   if (props.showWinner) {
     mistyButtonStyle = {
       opacity: '0.2'
@@ -17,14 +19,18 @@ function VoteButton (props) {
       style = {mistyButtonStyle}
 
       type="button"
-      onClick={ () => {
+      onClick={
+        // Showing results replaces voting fn with hiding results fn.
+        () => {
         return (props.showWinner ?
           props.clickToHideWinnerFn() :
           props.handleVote(props.candidateIndex)
         )}
       }
     >
-      Vote
+      {// Write "Vote" if user hasn't already voted for this candidate. 
+        (props.votes[props.commons.indexOf(props.user)]) !== props.candidateIndex ? 'Vote' : '✔✔'
+      }
     </button>
   )
 }

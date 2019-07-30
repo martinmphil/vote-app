@@ -1,6 +1,6 @@
 import React from 'react'
 
-function AfterVoting (props) {
+function CastVotes (props) {
 
   // Extra cloud entires produce a votes array too long for this commons
   // hence votes.slice(0, props.commons.length)
@@ -42,4 +42,4 @@ function AfterVoting (props) {
   )
 }
 
-export default AfterVoting
+export default CastVotes
