@@ -62,7 +62,6 @@ function App() {
 
   // Set app state.
   const votes = useCloud()
-  console.log(votes) //NB REMOVE
   const [user, setUser] = useState(commons[0])
   const [showWinner, setShowWinner] = useState(false)
   const [organiser, setOrganiser] = useState(false)
@@ -73,10 +72,25 @@ function App() {
       {setShowWinner(true)}
   }, [votes, user])
 
-  // This function handles clicking a button to remove the results league-table overlay.
+  // Handle removing the results overlay.
   const clickToHideWinnerFn = () => {
     setShowWinner(false)
   }
+
+  // Handle clicking background to remove the results overlay.
+  useEffect( () => {
+    const clickingAwayFromResults = (e) => {
+      // Test if results overlay doesn't contain target.
+      if ((!(document.querySelector('.results-overlay').contains(e.target) )))
+        {clickToHideWinnerFn()}
+    }
+    if (showWinner === true) {
+      window.addEventListener('click', clickingAwayFromResults, false )
+    }
+    return () => {
+      window.removeEventListener('click', clickingAwayFromResults, false )
+    }
+  }, [showWinner])
 
   const toggleOrganiser = () => {
     organiser ? setOrganiser(false) : setOrganiser(true)
@@ -137,7 +151,6 @@ function App() {
       </header>
 
       <main
-        onClick={() => setShowWinner(false)}
         className = {showWinner ? 'misty' : ''}
       >
         <h1 className="subtle-heading">Vote app</h1>

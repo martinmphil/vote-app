@@ -47,6 +47,7 @@ function LeagueTable (props) {
   {
     let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
 
+    // NB className "results-overlay" is used to detect if user clicks background to remove resutls overlay.
     return (
       <section className="results-overlay">
         <ResultsHeader />

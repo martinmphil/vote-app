@@ -10,10 +10,10 @@ function CastVotes (props) {
 
       {//NB true && expression evaluates to expression; false && expression evaluates to false.
         (props.votes.filter(v => v < 999999).length >= props.commons.length) &&
-        <p>Poll closed</p>
+        <p>Everybody voted</p>
       }
 
-      <h1 className="subtle-heading" >Votes Cast</h1>
+      <h1 className="subtle-heading" >Cast votes</h1>
       <ul>
         {props.votes.slice(0, props.commons.length).map(
           (v, index) => {
