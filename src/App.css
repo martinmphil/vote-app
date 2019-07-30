@@ -12,7 +12,8 @@
 .subtle-heading {
   font-weight: lighter;
   font-size: 120%;
-  color: hsl(215, 22%, 30%)
+  color: hsl(215, 22%, 30%);
+  margin-top: 0.6em;
 }
 
 .topic-heading {
@@ -55,7 +56,8 @@ header, .results-overlay-header {
   justify-content: space-between;
 }
 .results-overlay {
-  background-color: hsl(0, 0%, 5%);
+  /* background-color: hsl(0, 0%, 5%); */
+  background-color: hsl(215, 22%, 17%);
   color: hsl(60, 100%, 90%);
   z-index: 1;
   position: fixed;

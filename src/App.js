@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import db from './private/privateData'
 import './App.css'
-import Spinner from './Spinner'
 import LogIn from './LogIn'
 import BallotPaper from './BallotPaper'
 import LeagueTable from './LeagueTable'
@@ -78,19 +77,19 @@ function App() {
   }
 
   // Handle clicking background to remove the results overlay.
-  useEffect( () => {
-    const clickingAwayFromResults = (e) => {
-      // Test if results overlay doesn't contain target.
-      if ((!(document.querySelector('.results-overlay').contains(e.target) )))
-        {clickToHideWinnerFn()}
-    }
-    if (showWinner === true) {
-      window.addEventListener('click', clickingAwayFromResults, false )
-    }
-    return () => {
-      window.removeEventListener('click', clickingAwayFromResults, false )
-    }
-  }, [showWinner])
+  // useEffect( () => {
+  //   const clickingAwayFromResults = (e) => {
+  //     // Test if results overlay doesn't contain target.
+  //     if ((!(document.querySelector('.results-overlay').contains(e.target) )))
+  //       {clickToHideWinnerFn()}
+  //   }
+  //   if (showWinner === true) {
+  //     window.addEventListener('click', clickingAwayFromResults, false )
+  //   }
+  //   return () => {
+  //     window.removeEventListener('click', clickingAwayFromResults, false )
+  //   }
+  // }, [showWinner])
 
   const toggleOrganiser = () => {
     organiser ? setOrganiser(false) : setOrganiser(true)
@@ -133,7 +132,8 @@ function App() {
       }
 
       <header>
-        {(votes[commons.indexOf(user)] === 999999) ?
+        {// Either un-cast vote, or votes still loading, present a consistent view for fresh user.
+          (votes[commons.indexOf(user)] === 999999) || votes.length < commons.length ?
           <span>Cast your vote.</span> :
           <button
             className = "secondary-button"
@@ -151,11 +151,16 @@ function App() {
       </header>
 
       <main
+        onClick = {() => setShowWinner(false)}
         className = {showWinner ? 'misty' : ''}
       >
-        <h1 className="subtle-heading">Vote app</h1>
+        {// Same class style avoids flicker when loaded.
+          (!(votes.length >= commons.length)) ? 
+          <p className="subtle-heading">Loading...</p> :
+          <h1 className="subtle-heading">Vote app</h1>
+        }
 
-        <Spinner votes={votes} commons={commons}/>
+        {/* <Spinner votes={votes} commons={commons}/> */}
 
         <BallotPaper
           user = {user}
