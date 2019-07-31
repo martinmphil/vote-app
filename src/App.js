@@ -107,7 +107,10 @@ function App() {
 
   // Change user.
   const handleLogin = (e) => {
-    setUser(e.target.value)
+    // Excude dummy "Change user" option with zero length value "".
+    if (e.target.value.length > 0) {
+      setUser(e.target.value)
+    }
     if (votes[commons.indexOf(e.target.value)] === 999999) {
       setShowWinner(false)
     }
