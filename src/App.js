@@ -66,10 +66,10 @@ function App() {
   const [organiser, setOrganiser] = useState(false)
 
   // This function checks if this user already voted.
-  useEffect( ()=>{
-    if (votes[commons.indexOf(user)] < 999999)
-      {setShowWinner(true)}
-  }, [votes, user])
+  // useEffect( ()=>{
+  //   if (votes[commons.indexOf(user)] < 999999)
+  //     {setShowWinner(true)}
+  // }, [votes, user])
 
   // Handle removing the results overlay.
   const clickToHideWinnerFn = () => {
@@ -77,19 +77,19 @@ function App() {
   }
 
   // Handle clicking background to remove the results overlay.
-  // useEffect( () => {
-  //   const clickingAwayFromResults = (e) => {
-  //     // Test if results overlay doesn't contain target.
-  //     if ((!(document.querySelector('.results-overlay').contains(e.target) )))
-  //       {clickToHideWinnerFn()}
-  //   }
-  //   if (showWinner === true) {
-  //     window.addEventListener('click', clickingAwayFromResults, false )
-  //   }
-  //   return () => {
-  //     window.removeEventListener('click', clickingAwayFromResults, false )
-  //   }
-  // }, [showWinner])
+  useEffect( () => {
+    const clickingAwayFromResults = (e) => {
+      // Test if results overlay doesn't contain target.
+      if ((!(document.querySelector('.results-overlay').contains(e.target) )))
+        {clickToHideWinnerFn()}
+    }
+    if (showWinner === true) {
+      window.addEventListener('click', clickingAwayFromResults, false )
+    }
+    return () => {
+      window.removeEventListener('click', clickingAwayFromResults, false )
+    }
+  }, [showWinner])
 
   const toggleOrganiser = () => {
     organiser ? setOrganiser(false) : setOrganiser(true)
@@ -120,19 +120,16 @@ function App() {
   return (
     <div className="App">
 
-      {//NB true && expression evaluates to expression; false && expression evaluates to false.
-        showWinner &&
-        <LeagueTable
-          votes = {votes}
-          candidates = {candidates}
-          topic = {topic}
-          clickToHideWinnerFn = {clickToHideWinnerFn}
-          commons = {commons}
-          user = {user}
-          handleLogin = {handleLogin}
-          showWinner = {showWinner}
-        />
-      }
+      <LeagueTable
+        votes = {votes}
+        candidates = {candidates}
+        topic = {topic}
+        clickToHideWinnerFn = {clickToHideWinnerFn}
+        commons = {commons}
+        user = {user}
+        handleLogin = {handleLogin}
+        showWinner = {showWinner}
+      />
 
       <header>
         {// Either un-cast vote, or votes still loading, present a consistent view for fresh user.
@@ -154,7 +151,7 @@ function App() {
       </header>
 
       <main
-        onClick = {() => setShowWinner(false)}
+        // onClick = {() => setShowWinner(false)}
         className = {showWinner ? 'misty' : ''}
       >
         {// Same class style avoids flicker when loaded.

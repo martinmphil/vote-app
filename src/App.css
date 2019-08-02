@@ -60,7 +60,6 @@ header, .results-overlay-header {
   justify-content: space-between;
 }
 .results-overlay {
-  /* background-color: hsl(0, 0%, 5%); */
   background-color: hsl(215, 22%, 17%);
   color: hsl(60, 100%, 90%);
   z-index: 1;
@@ -72,11 +71,21 @@ header, .results-overlay-header {
   overflow-y: auto;
   padding: 1em;
   padding-bottom: 2em;
-  animation-duration: 3s;
+  /* animation-duration: 3s;
   animation-name: slide-down;
-  animation-fill-mode: forwards;
+  animation-fill-mode: forwards; */
 }
-@keyframes slide-down {
+.slide-down {
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-name: sliding-down;
+}
+.slide-up {
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-name: sliding-up;
+}
+@keyframes sliding-down {
   0% {
     opacity: 0;
     transform: translate(0, -100%);
@@ -84,6 +93,16 @@ header, .results-overlay-header {
   100% {
     opacity: 1;
     transform: translate(0, 0);
+  }
+}
+@keyframes sliding-up {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);    
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -100%);
   }
 }
 

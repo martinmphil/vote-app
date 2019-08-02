@@ -40,16 +40,19 @@ function LeagueTable (props) {
       </div>
     )
   }
+
+  if (props.votes.length < props.commons.length)
+  {return <span></span>}
     
   // test for tied first place
-  if (pollResults.length > 1
+  else if (pollResults.length > 1
     && pollResults[0].popularity === pollResults[1].popularity)
   {
     let runnersUp = pollResults.filter(j => j.popularity !== pollResults[0].popularity)
 
     // NB className "results-overlay" is used to detect if user clicks background to remove resutls overlay.
     return (
-      <section className="results-overlay">
+      <section className={'results-overlay ' + (props.showWinner ? 'slide-down' : 'slide-up') }>
         <ResultsHeader />
         <p>Front runners:-</p>
         <ul>
@@ -62,7 +65,7 @@ function LeagueTable (props) {
   } else {
     let alsoRan = pollResults.slice(1)
     return (
-      <section className="results-overlay">
+      <section className={'results-overlay ' + (props.showWinner ? 'slide-down' : 'slide-up')}>
         <ResultsHeader />
         <p>Front runner:-</p>
         <ul>
