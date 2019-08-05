@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils'
 import VoteButton from './VoteButton'
 
 const handleVote = jest.fn()
-// const clickToHideWinnerFn = jest.fn()
+// const hideWinnerFn = jest.fn()
 
 const votes = [0, 0, 1]
 

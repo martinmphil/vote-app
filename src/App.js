@@ -7,8 +7,6 @@ import LeagueTable from "./LeagueTable";
 import CastVotes from "./CastVotes";
 import ClearVotesButton from "./ClearVotesButton";
 
-// NB snapshot.docs[0].data().v and voteIndex: docs.id, ...docs.data().v
-
 function useCloud() {
   const [data, setData] = useState([]);
 
@@ -52,18 +50,32 @@ function App() {
   // Set app state.
   const votes = useCloud();
   const [user, setUser] = useState(commons[0]);
-  const [showWinner, setShowWinner] = useState(false);
   const [organiser, setOrganiser] = useState(false);
+  // Clicking the background to close the results overlay requires this showWinner state.
+  const [showWinner, setShowWinner] = useState(false);
 
-  // This function checks if this user already voted.
-  // useEffect( () => {
-  //   if (votes[commons.indexOf(user)] < 999999)
-  //     {setShowWinner(true)}
-  // }, [votes, user])
+  // Contains class names for the results-overlay element.
+  // const [overlay, setOverylay] = useState('retracted ');
+
+  // Fn employed by clear all votes button.
+  const setShowWinnerToFalseFn = () => {
+    setShowWinner(false);
+    document.querySelector(".results-overlay").classList.add("retacted");
+  };
+
+  // Handle displaying the results overlay.
+  const displayWinnerFn = () => {
+    setShowWinner(true);
+    document.querySelector(".results-overlay").classList.remove("retacted");
+    document.querySelector(".results-overlay").classList.remove("slide-up");
+    document.querySelector(".results-overlay").classList.add("slide-down");
+  };
 
   // Handle removing the results overlay.
-  const clickToHideWinnerFn = () => {
+  const hideWinnerFn = () => {
     setShowWinner(false);
+    document.querySelector(".results-overlay").classList.remove("slide-down");
+    document.querySelector(".results-overlay").classList.add("slide-up");
   };
 
   // Handle clicking background to remove the results overlay.
@@ -71,7 +83,7 @@ function App() {
     const clickingAwayFromResults = e => {
       // Test if results overlay doesn't contain target.
       if (!document.querySelector(".results-overlay").contains(e.target)) {
-        clickToHideWinnerFn();
+        hideWinnerFn();
       }
     };
     if (showWinner === true) {
@@ -96,17 +108,19 @@ function App() {
     await voteRef.update({ v: candidateIndex }).catch(function(err) {
       console.log("Error setting cloud db:- ", err);
     });
-    setShowWinner(true);
+    displayWinnerFn();
   };
 
   // Change user.
   const handleLogin = e => {
-    // Excude dummy "Change user" option with zero length value "".
     if (e.target.value.length > 0) {
       setUser(e.target.value);
+      window.scrollTo(0, 0);
     }
-    if (votes[commons.indexOf(e.target.value)] === 999999) {
+    if (votes.length < commons.length || votes[commons.indexOf(e.target.value)] === 999999) {
       setShowWinner(false);
+      document.querySelector(".results-overlay").classList.remove("slide-down");
+      document.querySelector(".results-overlay").classList.add("retacted");
     }
   };
 
@@ -116,7 +130,7 @@ function App() {
         votes={votes}
         candidates={candidates}
         topic={topic}
-        clickToHideWinnerFn={clickToHideWinnerFn}
+        hideWinnerFn={hideWinnerFn}
         commons={commons}
         user={user}
         handleLogin={handleLogin}
@@ -128,25 +142,20 @@ function App() {
         votes[commons.indexOf(user)] === 999999 || votes.length < commons.length ? (
           <span>Cast your vote.</span>
         ) : (
-          <button className="secondary-button" type="button" onClick={() => setShowWinner(true)}>
+          <button className="secondary-button" type="button" onClick={() => displayWinnerFn()}>
             Show results
           </button>
         )}
         <LogIn commons={commons} user={user} handleLogin={handleLogin} />
       </header>
 
-      <main
-        // onClick = {() => setShowWinner(false)}
-        className={showWinner ? "misty" : ""}
-      >
+      <main className={showWinner ? "misty" : ""}>
         {// Same class style avoids flicker when loaded.
         !(votes.length >= commons.length) ? (
           <p className="subtle-heading">Loading...</p>
         ) : (
           <h1 className="subtle-heading">Vote app</h1>
         )}
-
-        {/* <Spinner votes={votes} commons={commons}/> */}
 
         <BallotPaper
           user={user}
@@ -155,7 +164,7 @@ function App() {
           handleVote={handleVote}
           candidates={candidates}
           topic={topic}
-          clickToHideWinnerFn={clickToHideWinnerFn}
+          hideWinnerFn={hideWinnerFn}
           showWinner={showWinner}
         />
         <hr />
@@ -169,7 +178,8 @@ function App() {
           commons={commons}
           organiser={organiser}
           toggleOrganiser={toggleOrganiser}
-          clickToHideWinnerFn={clickToHideWinnerFn}
+          hideWinnerFn={hideWinnerFn}
+          setShowWinnerToFalseFn={setShowWinnerToFalseFn}
         />
         <hr />
       </main>

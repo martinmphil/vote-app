@@ -76,13 +76,16 @@ header,
   animation-name: slide-down;
   animation-fill-mode: forwards; */
 }
+.retacted {
+  transform: translate(0, -100%);
+}
 .slide-down {
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
   animation-name: sliding-down;
 }
 .slide-up {
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
   animation-name: sliding-up;
 }

@@ -27,7 +27,7 @@ function LeagueTable(props) {
   function ResultsHeader() {
     return (
       <div className="results-overlay-header">
-        <button onClick={() => props.clickToHideWinnerFn()}>Close results</button>
+        <button onClick={() => props.hideWinnerFn()}>Close results</button>
         <LogIn commons={props.commons} user={props.user} handleLogin={props.handleLogin} />
       </div>
     );
@@ -61,11 +61,20 @@ function LeagueTable(props) {
   return (
     <section
       className={
-        "results-overlay " +
-        (props.showWinner ? "slide-down" : "slide-up") +
+        "results-overlay retacted "
+        //  +
         // Hide results if data still loading from cloud.
-        (props.votes.length < props.commons.length ? "hidden" : "")
+        // (props.votes.length < props.commons.length && "hidden ")
       }
+      // className={
+      //   "results-overlay " +
+      //   // Hide results if data still loading from cloud.
+      //   (props.votes.length < props.commons.length
+      //     ? "hidden "
+      //     : props.showWinner
+      //     ? "slide-down "
+      //     : "slide-up ")
+      // }
     >
       <ResultsHeader />
       <Results />

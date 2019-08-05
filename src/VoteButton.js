@@ -23,7 +23,7 @@ function VoteButton (props) {
         // Showing results replaces voting fn with hiding results fn.
         () => {
         return (props.showWinner ?
-          props.clickToHideWinnerFn() :
+          props.hideWinnerFn() :
           props.handleVote(props.candidateIndex)
         )}
       }
