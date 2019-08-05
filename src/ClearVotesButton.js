@@ -22,7 +22,7 @@ function ClearVotesButton(props) {
     }
     commitBatch();
     props.toggleOrganiser();
-    props.setShowWinnerToFalseFn();
+    props.resetOverlay();
   };
 
   return (

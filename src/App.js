@@ -51,31 +51,27 @@ function App() {
   const votes = useCloud();
   const [user, setUser] = useState(commons[0]);
   const [organiser, setOrganiser] = useState(false);
-  // Clicking the background to close the results overlay requires this showWinner state.
+  // Retracting results overlay by clicking the background requires this showWinner state.
   const [showWinner, setShowWinner] = useState(false);
+  // overlay contains class names for displaying and retracting the results-overlay.
+  const [overlay, setOverylay] = useState("retracted ");
 
-  // Contains class names for the results-overlay element.
-  // const [overlay, setOverylay] = useState('retracted ');
-
-  // Fn employed by clear all votes button.
-  const setShowWinnerToFalseFn = () => {
+  // Fn employed by login dropdown and clear all votes button.
+  const resetOverlay = () => {
     setShowWinner(false);
-    document.querySelector(".results-overlay").classList.add("retacted");
+    setOverylay("retracted ");
   };
 
   // Handle displaying the results overlay.
   const displayWinnerFn = () => {
     setShowWinner(true);
-    document.querySelector(".results-overlay").classList.remove("retacted");
-    document.querySelector(".results-overlay").classList.remove("slide-up");
-    document.querySelector(".results-overlay").classList.add("slide-down");
+    setOverylay("slide-down ");
   };
 
-  // Handle removing the results overlay.
+  // Handle hiding the results overlay.
   const hideWinnerFn = () => {
     setShowWinner(false);
-    document.querySelector(".results-overlay").classList.remove("slide-down");
-    document.querySelector(".results-overlay").classList.add("slide-up");
+    setOverylay("slide-up ");
   };
 
   // Handle clicking background to remove the results overlay.
@@ -118,9 +114,7 @@ function App() {
       window.scrollTo(0, 0);
     }
     if (votes.length < commons.length || votes[commons.indexOf(e.target.value)] === 999999) {
-      setShowWinner(false);
-      document.querySelector(".results-overlay").classList.remove("slide-down");
-      document.querySelector(".results-overlay").classList.add("retacted");
+      resetOverlay();
     }
   };
 
@@ -135,6 +129,7 @@ function App() {
         user={user}
         handleLogin={handleLogin}
         showWinner={showWinner}
+        overlay={overlay}
       />
 
       <header>
@@ -150,7 +145,7 @@ function App() {
       </header>
 
       <main className={showWinner ? "misty" : ""}>
-        {// Same class style avoids flicker when loaded.
+        {// Same class style on both h1 and p elements avoids flicker upon loading.
         !(votes.length >= commons.length) ? (
           <p className="subtle-heading">Loading...</p>
         ) : (
@@ -178,8 +173,7 @@ function App() {
           commons={commons}
           organiser={organiser}
           toggleOrganiser={toggleOrganiser}
-          hideWinnerFn={hideWinnerFn}
-          setShowWinnerToFalseFn={setShowWinnerToFalseFn}
+          resetOverlay={resetOverlay}
         />
         <hr />
       </main>

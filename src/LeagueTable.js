@@ -61,7 +61,7 @@ function LeagueTable(props) {
   return (
     <section
       className={
-        "results-overlay retacted "
+        `results-overlay ${props.overlay}`
         //  +
         // Hide results if data still loading from cloud.
         // (props.votes.length < props.commons.length && "hidden ")

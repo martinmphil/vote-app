@@ -76,7 +76,7 @@ header,
   animation-name: slide-down;
   animation-fill-mode: forwards; */
 }
-.retacted {
+.retracted {
   transform: translate(0, -100%);
 }
 .slide-down {
