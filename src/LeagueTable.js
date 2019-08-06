@@ -59,23 +59,7 @@ function LeagueTable(props) {
   }
 
   return (
-    <section
-      className={
-        `results-overlay ${props.overlay}`
-        //  +
-        // Hide results if data still loading from cloud.
-        // (props.votes.length < props.commons.length && "hidden ")
-      }
-      // className={
-      //   "results-overlay " +
-      //   // Hide results if data still loading from cloud.
-      //   (props.votes.length < props.commons.length
-      //     ? "hidden "
-      //     : props.showWinner
-      //     ? "slide-down "
-      //     : "slide-up ")
-      // }
-    >
+    <section className={`results-overlay ${props.overlay}`}>
       <ResultsHeader />
       <Results />
     </section>
