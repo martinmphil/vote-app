@@ -7,7 +7,12 @@ function BallotPaper(props) {
       <h2 className="topic-heading">{props.topic}</h2>
       <div className="ballot-paper-container">
         {props.candidates.map((candidate, index) => (
-          <section key={candidate} className="candidate">
+          <section
+            key={candidate}
+            className={`candidate ${
+              props.votes[props.commons.indexOf(props.user)] === index ? "tick" : ""
+            } `}
+          >
             {candidate}
             <VoteButton
               candidateIndex={index}

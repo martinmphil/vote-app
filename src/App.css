@@ -15,6 +15,46 @@
   color: hsl(215, 22%, 30%);
   margin-top: 0.6em;
 }
+.primary-button {
+  display: block;
+  cursor: pointer;
+  border-radius: 0.5em;
+  padding: 0.6em 1.6em;
+  margin-top: 0.6em;
+  color: white;
+  background-color: hsl(225, 100%, 25%);
+  border-color: hsl(240, 100%, 70%);
+  box-shadow: 0 0.4em 0.2em hsla(0, 0%, 0%, 0.1), 0 0.2em 0.125em hsla(0, 0%, 0%, 0.2);
+}
+.primary-button:hover {
+  background-color: white;
+  border-color: hsl(212, 19%, 84%);
+  color: black;
+}
+.secondary-button {
+  cursor: pointer;
+  border-radius: 0.5em;
+  padding: 0.4em;
+  color: black;
+  background-color: hsl(210, 100%, 90%);
+  border-color: hsl(210, 100%, 80%);
+}
+.secondary-button:hover {
+  background-color: white;
+  border-color: hsl(212, 19%, 84%);
+}
+.danger-button {
+  cursor: pointer;
+  border-radius: 0.5em;
+  padding: 0.4em;
+  color: white;
+  background-color: red;
+  border-color: pink;
+}
+.danger-button:hover {
+  color: red;
+  background-color: white;
+}
 
 #login {
   margin-left: 0.4em;
@@ -37,21 +77,12 @@
   box-shadow: 0 0.1em 0.2em hsla(0, 0%, 0%, 0.12), 0 0.1em 0.125em hsla(0, 0%, 0%, 0.24);
 }
 
-.primary-button {
-  display: block;
-  cursor: pointer;
-  border-radius: 0.5em;
-  padding: 0.6em 1.6em;
-  margin-top: 0.6em;
-  color: white;
-  background-color: hsl(225, 100%, 25%);
-  border-color: hsl(240, 100%, 70%);
-  box-shadow: 0 0.4em 0.2em hsla(0, 0%, 0%, 0.1), 0 0.2em 0.125em hsla(0, 0%, 0%, 0.2);
-}
-.primary-button:hover {
-  background-color: white;
-  border-color: hsl(212, 19%, 84%);
-  color: black;
+.tick {
+  background: hsl(145, 90%, 80%);
+  background-image: url(./green_tick.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
 }
 
 header,
@@ -72,9 +103,6 @@ header,
   overflow-y: auto;
   padding: 1em;
   padding-bottom: 2em;
-  /* animation-duration: 3s;
-  animation-name: slide-down;
-  animation-fill-mode: forwards; */
 }
 .retracted {
   transform: translate(0, -100%);
@@ -108,31 +136,6 @@ header,
     opacity: 0;
     transform: translate(0, -100%);
   }
-}
-
-.secondary-button {
-  cursor: pointer;
-  border-radius: 0.5em;
-  padding: 0.4em;
-  color: black;
-  background-color: hsl(210, 100%, 90%);
-  border-color: hsl(210, 100%, 80%);
-}
-.secondary-button:hover {
-  background-color: white;
-  border-color: hsl(212, 19%, 84%);
-}
-.danger-button {
-  cursor: pointer;
-  border-radius: 0.5em;
-  padding: 0.4em;
-  color: white;
-  background-color: red;
-  border-color: pink;
-}
-.danger-button:hover {
-  color: red;
-  background-color: white;
 }
 
 /* responsive web design */
