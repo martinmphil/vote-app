@@ -4,7 +4,7 @@ function LogIn(props) {
   return (
     <form>
       <label htmlFor="login">
-        Logged-in as <strong>{props.user}</strong>.
+        Logged-in as <strong>{props.user}</strong>
       </label>
       <select defaultValue={""} id="login" name="login" onChange={props.handleLogin}>
         <option value="" disabled>
