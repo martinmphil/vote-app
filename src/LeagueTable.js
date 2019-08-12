@@ -18,8 +18,11 @@ function LeagueTable(props) {
   function listings(array) {
     return array.map(d => (
       <li key={d.candidate}>
-        "{d.candidate}" gained {d.popularity}
-        {d.popularity === 1 ? " vote" : " votes"}
+        {d.candidate}{" "}
+        <span className="tally">
+          ({d.popularity}
+          {d.popularity === 1 ? "vote)" : "votes)"}
+        </span>
       </li>
     ));
   }
@@ -40,9 +43,15 @@ function LeagueTable(props) {
       return (
         <div>
           <p>Front runners:-</p>
-          <ul>{listings(pollResults.filter(j => j.popularity === pollResults[0].popularity))}</ul>
-          {runnersUp.length > 0 && <p>{runnersUp.length === 1 ? "Runner" : "Runners"} up:-</p>}
-          <ul>{listings(runnersUp)}</ul>
+          <ul className="winners">
+            {listings(pollResults.filter(j => j.popularity === pollResults[0].popularity))}
+          </ul>
+          {runnersUp.length > 0 && (
+            <div className="also-running">
+              <p>Also running:-</p>
+              <ul>{listings(runnersUp)}</ul>
+            </div>
+          )}
         </div>
       );
     } else {
@@ -50,9 +59,13 @@ function LeagueTable(props) {
       return (
         <div>
           <p>Front runner:-</p>
-          <ul>{pollResults.length > 0 && listings(pollResults.slice(0, 1))}</ul>
-          {alsoRan.length > 0 && <p>{alsoRan.length === 1 ? "Runner" : "Runners"} up:-</p>}
-          <ul>{listings(alsoRan)}</ul>
+          <ul className="winners">{pollResults.length > 0 && listings(pollResults.slice(0, 1))}</ul>
+          {alsoRan.length > 0 && (
+            <div className="also-running">
+              <p>Also running:-</p>
+              <ul>{listings(alsoRan)}</ul>
+            </div>
+          )}
         </div>
       );
     }
@@ -61,6 +74,7 @@ function LeagueTable(props) {
   return (
     <section className={`results-overlay ${props.overlay}`}>
       <ResultsHeader />
+      <br />
       <Results />
     </section>
   );
