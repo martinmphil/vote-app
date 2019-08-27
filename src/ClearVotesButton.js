@@ -36,7 +36,7 @@ function ClearVotesButton(props) {
         type="button"
         onClick={clearAllVotesUpdater}
       >
-        Clear all
+        Clear all Votes
       </button>
     </div>
   );
