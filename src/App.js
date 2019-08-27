@@ -49,12 +49,17 @@ const commons = ["Mar", "Star", "York", "Flff", "Crit", "Baz"];
 function App() {
   // Set app state.
   const votes = useCloud();
-  const [user, setUser] = useState(commons[0]);
+  const [user, setUser] = useState(localStorage.getItem("username") || commons[0] || "");
   const [organiser, setOrganiser] = useState(false);
   // Retracting results overlay by clicking the background requires this showWinner state.
   const [showWinner, setShowWinner] = useState(false);
   // overlay contains class names for displaying and retracting the results-overlay.
   const [overlay, setOverylay] = useState("retracted ");
+
+  // User's name is saved to local storage if user changes
+  useEffect(() => {
+    localStorage.setItem("username", user);
+  }, [user]);
 
   // Fn employed by login dropdown and clear all votes button.
   const resetOverlay = () => {
