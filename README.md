@@ -1,7 +1,9 @@
 # vote-app
-users choose from list of suggestions
+This project has been archived.
 
-![vote-app-logo](https://user-images.githubusercontent.com/37618836/50683939-c5291780-100b-11e9-8bbc-0ba27ca28872.png)
+Users choose from list of suggestions. 
+
+![vote-app-logo](https://user-images.githubusercontent.com/37618836/157210711-e9e64cd2-ee87-44f6-9814-5030d24ac882.png)
 
 ## Project setup
 ```
